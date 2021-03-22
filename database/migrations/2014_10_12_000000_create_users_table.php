@@ -11,8 +11,10 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
+        if(Schema::hasTable('users')) return;
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
