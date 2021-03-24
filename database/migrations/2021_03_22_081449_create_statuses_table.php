@@ -17,7 +17,7 @@ class CreateStatusesTable extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('language_id')->unsigned();
-            $table->foreign('language_id')->references('id')->on('languages');
+            $table->foreign('language_id','statuses_foreign_language_id')->references('id')->on('languages');
             $table->char('name',55);
         });
     }

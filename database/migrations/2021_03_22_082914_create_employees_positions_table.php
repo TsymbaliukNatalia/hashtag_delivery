@@ -16,9 +16,9 @@ class CreateEmployeesPositionsTable extends Migration
         if(Schema::hasTable('employees_positions')) return;
         Schema::create('employees_positions', function (Blueprint $table) {
             $table->integer('employee_id')->unsigned();
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id', 'employees_positions_foreign_employee_id')->references('id')->on('employees');
             $table->integer('position_id')->unsigned();
-            $table->foreign('position_id')->references('id')->on('positions');
+            $table->foreign('position_id', 'employees_positions_foreign_position_id')->references('id')->on('positions');
             $table->primary(['employee_id', 'position_id']);
             $table->date('date_change')->nullable();  
         });
