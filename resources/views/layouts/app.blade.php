@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('page_title')</title>
     <link href="/css/app.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">       
+    <meta name="csrf-token" content="{{ csrf_token() }}">     
 </head>
 
 <body>
     <div class="wrapper">
 
-        @yield('content');
+        @yield('content')
 
         <div id="main_menu" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-top">
             <div>&#169; 2021 Цимбалюк Наталія в рамках курсу "PHP DEVELOPER - КОМП'ЮТЕРНА АКАДЕМІЯ HASHTAG" </div>
