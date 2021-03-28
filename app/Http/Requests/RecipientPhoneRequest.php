@@ -24,7 +24,6 @@ class RecipientPhoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_sender' => 'required|regex:/(\+380)[0-9]{9}/|size:13',
             'phone_recipient' => 'required|regex:/(\+380)[0-9]{9}/|size:13'
         ];
     }

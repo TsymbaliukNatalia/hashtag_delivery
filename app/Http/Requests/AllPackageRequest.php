@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewPackageRequest extends FormRequest
+class AllPackageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,15 +32,14 @@ class NewPackageRequest extends FormRequest
             'surname_recipient' => 'required|alpha|min:2',
             'name_recipient' => 'required|alpha|min:2',
             'middle_name_recipient' => 'alpha|min:2',
-            'city_recipient' => 'required|alpha|exist:cities,name',
-            'width' => 'required|numeric',
-            'length' => 'required|numeric',
-            'heigth' => 'required|numeric',
-            'weight' => 'required|numeric',
-            'cost' => 'required|numeric',
-            'package_category' => 'required|alpha|exist:categories,name',
-            'pay_sum' => 'required|numeric',
-            'payer' => 'required'
+            'pacckage_width' => 'required|numeric',
+            'pacckage_length' => 'required|numeric',
+            'pacckage_heigth' => 'required|numeric',
+            'pacckage_weight' => 'required|numeric',
+            'pacckage_cost' => 'required|numeric',
+            'package_category' => 'required',
+            // 'pay_sum' => 'required|numeric',
+            // 'payer' => 'required'
         ];
     }
 
@@ -69,25 +68,22 @@ class NewPackageRequest extends FormRequest
             'name_recipient.min' => 'Поле "Ім`я отримувача" повинно містити не менше 2 символів',
             'middle_name_recipient.alpha' => 'Поле "По батькові отримувача" повинно містити лише алфавітні символи',
             'middle_name_recipient.min' => 'Поле "По батькові отримувача" повинно містити не менше 2 символів',
-            'city_recipient.required' => 'Поле "Місто отримувача:" обов`язкове для заповнення',
-            'city_recipient.alpha' => 'Поле "Місто отримувача" повинно містити лише алфавітні символи',
-            'city_recipient.exist' => 'Значення поля "Місто отримувача" повинно існувати в базі даних',
-            'width.required' => 'Поле "Ширина" обов`язкове для заповнення',
-            'length.required' => 'Поле "Довжина" обов`язкове для заповнення',
-            'heigth.required' => 'Поле "Висота" обов`язкове для заповнення',
-            'weight.required' => 'Поле "Вага" обов`язкове для заповнення',
-            'cost.required' => 'Поле "Оціночна вартість" обов`язкове для заповнення',
-            'width.numeric' => 'Поле "Ширина" має бути числом',
-            'length.numeric' => 'Поле "Довжина" має бути числом',
-            'heigth.numeric' => 'Поле "Висота" має бути числом',
-            'weight.numeric' => 'Поле "Вага" має бути числом',
-            'cost.numeric' => 'Поле "Оціночна вартість" має бути числом',
+            'pacckage_width.required' => 'Поле "Ширина" обов`язкове для заповнення',
+            'pacckage_length.required' => 'Поле "Довжина" обов`язкове для заповнення',
+            'pacckage_heigth.required' => 'Поле "Висота" обов`язкове для заповнення',
+            'pacckage_weight.required' => 'Поле "Вага" обов`язкове для заповнення',
+            'pacckage_cost.required' => 'Поле "Оціночна вартість" обов`язкове для заповнення',
+            'pacckage_width.numeric' => 'Поле "Ширина" має бути числом',
+            'pacckage_length.numeric' => 'Поле "Довжина" має бути числом',
+            'pacckage_heigth.numeric' => 'Поле "Висота" має бути числом',
+            'pacckage_weight.numeric' => 'Поле "Вага" має бути числом',
+            'pacckage_cost.numeric' => 'Поле "Оціночна вартість" має бути числом',
             'package_category.required' => 'Поле "Категорія посилки:" обов`язкове для заповнення',
-            'package_category.alpha' => 'Поле "Категорія посилки" повинно містити лише алфавітні символи',
-            'package_category.exist' => 'Значення поля "Категорія посилки" повинно існувати в базі даних',
-            'pay_sum.required' => 'Поле "До сплати (грн):" обов`язкове для заповнення',
-            'pay_sum.numeric' => 'Поле "До сплати (грн):" має бути числом',
-            'payer.required' => 'Поле "Платник:" обов`язкове для вибору'
+            // 'package_category.alpha' => 'Поле "Категорія посилки" повинно містити лише алфавітні символи',
+            // 'pay_sum.required' => 'Поле "До сплати (грн):" обов`язкове для заповнення',
+            // 'pay_sum.numeric' => 'Поле "До сплати (грн):" має бути числом',
+            // 'payer.required' => 'Поле "Платник:" обов`язкове для вибору'
         ];
     }
+    
 }

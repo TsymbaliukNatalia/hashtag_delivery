@@ -40369,7 +40369,8 @@ $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
   }
-});
+}); // додаємо маски для вводу номерів телефону
+
 $(document).ready(function () {
   Inputmask({
     "mask": "+380999999999"
@@ -40389,10 +40390,14 @@ $('#phone_recipient').keydown(function (e) {
     var recipient_phone = $('#phone_recipient').val();
     ajaxGetInfoRecipient(recipient_phone);
   }
-});
+}); // при зміні міста підтягуємо його відділення
+
 $('#city_recipient').change(function (e) {
   var city = $('#city_recipient').val();
   ajaxGetCityPoints(city);
+});
+$('#add_new_package').click(function (e) {
+  $('#form_new_package').submit();
 });
 $(function () {
   $("#city_recipient").trigger("change");
@@ -40414,6 +40419,9 @@ function ajaxGetInfoSender(sender_phone) {
     data: {
       phone_sender: sender_phone
     },
+    // beforeSend: function (request){
+    //     return request.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+    // },
     success: function success(data) {
       $('.alert-danger').remove();
       $('.sender_info_box').css('display', 'flex');
@@ -40488,7 +40496,7 @@ function ajaxGetCityPoints(city) {
     success: function success(data) {
       $('#point_recipient').empty();
       data.forEach(function (point) {
-        $('#point_recipient').append("<option>" + point['name'] + ' - ' + point['adress'] + "</option>");
+        $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
       });
     },
     error: function error(data, textStatus, errorThrown) {}
