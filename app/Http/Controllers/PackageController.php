@@ -130,12 +130,21 @@ class PackageController extends Controller
             return view('admin', [
                 'res' => true
             ]);
-    //     });
-    //     return view('admin', [
-    //         'res' => false
-    //     ]);
     }
-    // return redirect()->route('blog.index')
-    //         ->with('success','Blog updated successfully');
+    public function getCity(){
+        
+        return view('points', [
+            'cities' => City::all()
+            ]);
+
+    }
+
+    public function getPackageCalculateInfo(){
+        
+        return view('calculate', [
+            'cities' => City::all(),
+            'categories' => Category::all()
+            ]);
+    }
     
 }

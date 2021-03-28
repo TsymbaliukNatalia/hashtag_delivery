@@ -4,8 +4,8 @@
             <a class="my-0 mr-md-auto font-weight-normal" href="{{ route('home') }}"><img src="/img/main_logo.png" alt="company_logo" class="main_logo"></a>
 
             <nav class="my-2 my-md-0 mr-md-3">
-                <a class="btn btn-primary" href="#" role="button">Відділення</a>
-                <a class="btn btn-primary" href="#" role="button">Розрахунок вартості</a>
+                <a class="btn btn-primary" href="{{ route('points') }}" role="button">Відділення</a>
+                <a class="btn btn-primary" href="{{ route('calculate') }}" role="button">Розрахунок вартості</a>
 
 
                 <button type="button" class="btn btn-primary">

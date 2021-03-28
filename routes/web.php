@@ -22,4 +22,7 @@ Route::post('calculate_package_cost', 'PackageController@getPackageCost')->name(
 
 Route::post('add_new_package', 'PackageController@addNewPackage')->name('add_new_package');
 
+Route::get('/points', 'PackageController@getCity')->name('points');
+Route::get('/calculate', 'PackageController@getPackageCalculateInfo')->name('calculate');
+
 

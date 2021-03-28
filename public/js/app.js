@@ -40396,11 +40396,16 @@ $('#city_recipient').change(function (e) {
   var city = $('#city_recipient').val();
   ajaxGetCityPoints(city);
 });
+$('#city_list').change(function (e) {
+  var city = $('#city_list').val();
+  ajaxGetCityPointsList(city);
+});
 $('#add_new_package').click(function (e) {
   $('#form_new_package').submit();
 });
 $(function () {
   $("#city_recipient").trigger("change");
+  $("#city_list").trigger("change");
 }); // масив полів, заповненість яких потрібно перевіряти при розрахунку вартості доставки
 
 var validateCostFields = ['#pacckage_width', '#pacckage_length', '#pacckage_heigth', '#pacckage_weight', '#pacckage_cost']; // для кожного поля присвоюємо функцію валідації
@@ -40483,7 +40488,7 @@ function ajaxGetInfoRecipient(recipient_phone) {
       });
     }
   });
-} // дістаємо відділення відповідно до вибраного міста
+} // дістаємо відділення відповідно до вибраного міста для сторінки з новою посилкою
 
 
 function ajaxGetCityPoints(city) {
@@ -40497,6 +40502,24 @@ function ajaxGetCityPoints(city) {
       $('#point_recipient').empty();
       data.forEach(function (point) {
         $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
+      });
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} // дістаємо відділення відповідно до вибраного міста для пункту меню "Відділення"
+
+
+function ajaxGetCityPointsList(city) {
+  $.ajax({
+    type: "POST",
+    url: 'get_points',
+    data: {
+      city: city
+    },
+    success: function success(data) {
+      $('.points_list').empty();
+      data.forEach(function (point) {
+        $('.points_list').append("<li>" + point['name'] + ' - ' + point['adress'] + "</li>");
       });
     },
     error: function error(data, textStatus, errorThrown) {}
