@@ -13,6 +13,7 @@ $.ajaxSetup({
 $(document).ready(function(){
     Inputmask({"mask": "+380999999999"}).mask('#phone_sender');
     Inputmask({"mask": "+380999999999"}).mask('#phone_recipient');
+    Inputmask({"mask": "+380999999999"}).mask('#phone');
 });
 
 $('#phone_sender').keydown(function(e){

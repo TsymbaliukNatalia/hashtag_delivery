@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+})->name('start');
 
 Route::get('/admin', function () {
     return view('admin');
@@ -25,4 +26,12 @@ Route::post('add_new_package', 'PackageController@addNewPackage')->name('add_new
 Route::get('/points', 'PackageController@getCity')->name('points');
 Route::get('/calculate', 'PackageController@getPackageCalculateInfo')->name('calculate');
 
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'AdminController@index')->name('admin');
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
