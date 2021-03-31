@@ -11037,3 +11037,39 @@ body {
   color: white;
 }
 
+.big_text {
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.switch_active {
+  font-size: 14px;
+}
+
+.home_content_box {
+  margin-bottom: 30px;
+}
+
+.no_active_text {
+  color: grey;
+}
+
+.package_table {
+  background-color: whitesmoke;
+  margin-top: 15px;
+  border-radius: 20px;
+}
+
+.package_table tr {
+  text-align: center;
+  vertical-align: top;
+  font-size: 14px;
+  color: #323233;
+}
+
+.package_table td {
+  text-align: center;
+  vertical-align: top;
+  font-size: 12px;
+}
+
