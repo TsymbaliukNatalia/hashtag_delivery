@@ -26,6 +26,7 @@ Route::post('add_new_package', 'PackageController@addNewPackage')->name('add_new
 Route::get('/points', 'PackageController@getCity')->name('points');
 Route::get('/calculate', 'PackageController@getPackageCalculateInfo')->name('calculate');
 
+Route::post('get_package_info_number', 'PackageController@getInfoPackageByNumber')->name('get_package_info_number');
 
 
 Auth::routes();

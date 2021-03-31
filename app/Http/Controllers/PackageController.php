@@ -146,5 +146,16 @@ class PackageController extends Controller
             'categories' => Category::all()
             ]);
     }
+
+    public function getInfoPackageByNumber(Request $req){
+
+        $number = $req->input('number');
+        $package = Package::find($number);
+        $package_info["status"] = Status::find($package->status_id)->name;
+        $date = $package->created_at;
+        $package_info["date"] = date("d-m-Y", strtotime($date.'+ 1 days'));
+        
+        return response()->json($package_info);
+    }
     
 }

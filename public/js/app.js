@@ -40381,13 +40381,18 @@ $(document).ready(function () {
   Inputmask({
     "mask": "+380999999999"
   }).mask('#phone');
-});
+  Inputmask({
+    "mask": "999999"
+  }).mask('#search_package');
+}); // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
+
 $('#phone_sender').keydown(function (e) {
   if (e.keyCode == 13) {
     var sender_phone = $('#phone_sender').val();
     ajaxGetInfoSender(sender_phone);
   }
-});
+}); // при натисканні 'enter' в полі '#phone_recipient' відправляємо запит для пошуку клієнта по номеру телефону
+
 $('#phone_recipient').keydown(function (e) {
   if (e.keyCode == 13) {
     var recipient_phone = $('#phone_recipient').val();
@@ -40398,13 +40403,28 @@ $('#phone_recipient').keydown(function (e) {
 $('#city_recipient').change(function (e) {
   var city = $('#city_recipient').val();
   ajaxGetCityPoints(city);
-});
+}); // підтягуємо міста з БД на сторінці "Відділення"
+
 $('#city_list').change(function (e) {
   var city = $('#city_list').val();
   ajaxGetCityPointsList(city);
-});
+}); // при натисканні кнопки "Оформити посилку" відправляємо запит на створення нової посилки
+
 $('#add_new_package').click(function (e) {
   $('#form_new_package').submit();
+});
+$('#search_package').keydown(function (e) {
+  if (e.keyCode == 13) {
+    var package_number = $('#search_package').val();
+    ajaxGetInfoPackage(package_number);
+  }
+});
+$('#search-addon').click(function (e) {
+  var package_number = $('#search_package').val();
+
+  if (package_number.length == 6) {
+    ajaxGetInfoPackage(package_number);
+  }
 });
 $(function () {
   $("#city_recipient").trigger("change");
@@ -40561,13 +40581,25 @@ function ajaxCalculateCostPackage() {
       $('.pay_sum_block').css('display', 'block');
       $('#pay_sum').val(data);
     },
-    error: function error(data, textStatus, errorThrown) {// let resporse = data.responseJSON;
-      // let errors = resporse['errors']['width'];
-      // let $errorsDiv = $( '<div class="alert alert-danger"><ul></ul></div>');
-      // $errorsDiv.prependTo($("#create_package_box"));
-      // errors.forEach(function(element){
-      //     $('.alert-danger').append('<li>'+element+'</li>');
-      // });
+    error: function error(data, textStatus, errorThrown) {}
+  });
+}
+
+function ajaxGetInfoPackage(package_number) {
+  $.ajax({
+    type: "POST",
+    url: 'get_package_info_number',
+    data: {
+      number: package_number
+    },
+    success: function success(data) {
+      $('#info_about_package').empty();
+      $('#info_about_package').append("<p>Статус посилки - " + data['status'] + "</p>");
+      $('#info_about_package').append("<p>Орієнтовна дата прибуття - " + data['date'] + "</p>");
+    },
+    error: function error(data, textStatus, errorThrown) {
+      $('#info_about_package').empty();
+      $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
     }
   });
 }

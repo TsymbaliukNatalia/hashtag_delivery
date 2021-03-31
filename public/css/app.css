@@ -11032,3 +11032,8 @@ body {
   margin-bottom: 15px;
 }
 
+#info_about_package p {
+  margin-bottom: 2px;
+  color: white;
+}
+
