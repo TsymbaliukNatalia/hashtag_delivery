@@ -15,15 +15,23 @@ use App\Package;
 use App\Status;
 use App\Point;
 use App\History_status;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Hesto\MultiAuth\Traits\LogsoutGuard;
+
 
 class PackageController extends Controller
 {
     public function getStartInfo(){
+        if(Auth::guard('admin')->check()){
+            return view('new_package', [
+                'cities' => City::all(),
+                'categories' => Category::all()
+                ]);
+        } else{
+            return redirect('admin/login');
+        }
         
-        return view('new_package', [
-            'cities' => City::all(),
-            'categories' => Category::all()
-            ]);
 
     }
     public function getSenderInfo(SenderPhoneRequest $req){

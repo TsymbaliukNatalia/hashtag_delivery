@@ -14,8 +14,8 @@
                 Мій кабінет
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item text-center" href="/login">Увійти</a>
-                <a class="dropdown-item text-center" href="/register">Зареєструватись</a>
+                <a class="dropdown-item text-center" href="/vendor/login">Увійти</a>
+                <a class="dropdown-item text-center" href="/vendor/register">Зареєструватись</a>
             </div>
 
 
