@@ -90,6 +90,12 @@ $(document).ready(function (){
     }
  });
 
+ $('#customSwitches').change(function(e){
+    let is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+    ajaxGetUserPackages('receiver', is_active);
+});
+ 
+
 function ajaxGetInfoSender(sender_phone){
     $.ajax({
         type: "POST",
@@ -257,6 +263,7 @@ function ajaxGetUserPackages(individual, is_active = 0){
             is_active : is_active
         },
         success: function (data) {
+            $('.package_table tbody').empty();
             if($('.package_table') && data.length > 0){
                 for(let i = 0; i < data.length; i++){
                     let price = data[i]['payment'] == 0 ? 0 : data[i]['price'];

@@ -195,7 +195,11 @@ class PackageController extends Controller
         cat.name as category,
         st.name as status'))
         ->where(DB::raw('p.sender_id'), '=', $userId);
-      
+
+        if($req->is_active == 1) {
+            $packages->whereNotIn(DB::raw('p.status_id'), [4, 10]);
+        }
+        
         return response()->json($packages->get());
     }
     

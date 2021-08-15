@@ -40444,6 +40444,10 @@ $(document).ready(function () {
     ajaxGetUserPackages('receiver');
   }
 });
+$('#customSwitches').change(function (e) {
+  var is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+  ajaxGetUserPackages('receiver', is_active);
+});
 
 function ajaxGetInfoSender(sender_phone) {
   $.ajax({
@@ -40619,6 +40623,8 @@ function ajaxGetUserPackages(individual) {
       is_active: is_active
     },
     success: function success(data) {
+      $('.package_table tbody').empty();
+
       if ($('.package_table') && data.length > 0) {
         for (var i = 0; i < data.length; i++) {
           var price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
