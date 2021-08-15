@@ -85,18 +85,41 @@ $('#calculate_cost').click(function(e){
     ajaxCalculateCostPackage();
 });
 
+//знаходимо посилки по замовчуванню
+let is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+let individual = 'receiver';
 $(document).ready(function (){
     if($('package_table')){
-        ajaxGetUserPackages('receiver');
+        ajaxGetUserPackages(individual);
     }
-    ajaxGetIncomingPackageCount('sender');
+    ajaxPackageCount('sender', is_active);
+    ajaxPackageCount('receiver', is_active);
  });
 
+//  знаходимо посилки відповідно до статусу активності
  $('#customSwitches').change(function(e){
-    let is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-    ajaxGetUserPackages('receiver', is_active);
-    ajaxGetIncomingPackageCount('sender', is_active);
+    is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+    ajaxGetUserPackages(individual, is_active);
+    ajaxPackageCount('sender', is_active);
+    ajaxPackageCount('receiver', is_active);
 });
+
+//вибір вихідних посилок
+$('#sent').click(function(){
+    individual = 'sender';
+    toggleActivePackages(individual);
+    $('.individual').text('ПІБ отримувача');
+    $('.individual-phone').text('Телефон отримувача');
+});
+
+//вибір вхідних посилок
+$('#incoming').click(function(){
+    individual = 'receiver';
+    toggleActivePackages(individual);
+    $('.individual').text('ПІБ відправника');
+    $('.individual-phone').text('Телефон відправника');
+});
+
  
 
 function ajaxGetInfoSender(sender_phone){
@@ -281,7 +304,7 @@ function ajaxGetUserPackages(individual, is_active = 0){
                     .append(`<td>${data[i]['weight']} кг </td>`)
                     .append(`<td>${data[i]['category']}</td>`)
                     .append(`<td>${data[i]['created_at']}</td>`)
-                    .append(`<td>${price} грн</td>`)
+                    .append(`<td class="price">${price} грн</td>`)
                     .append(`<td>${data[i]['status']}</td>`)
                 
                      $('.package_table tbody').append(newRow); 
@@ -294,7 +317,8 @@ function ajaxGetUserPackages(individual, is_active = 0){
     });
 }
 
-function ajaxGetIncomingPackageCount(individual, is_active = 0){
+//кількість посилок
+function ajaxPackageCount(individual, is_active = 0){
     $.ajax({
         type: "POST",
         url: 'get_packages_count',
@@ -304,15 +328,22 @@ function ajaxGetIncomingPackageCount(individual, is_active = 0){
         },
         success: function (data) {
            if(individual == 'sender'){
-            $('#incoming_count').text(data);
-           } else if (individual == 'receiver'){
             $('#sent_count').text(data);
+           } else if (individual == 'receiver'){
+            $('#incoming_count').text(data);
            }
         },
         error: function (data, textStatus, errorThrown) {
             
         },
     });
+}
+
+// перемикаємо тип посилок
+function toggleActivePackages(individual){
+    $('#incoming').toggleClass('no_active_text');
+    $('#sent').toggleClass('no_active_text');
+    ajaxGetUserPackages(individual, is_active);
 }
 
 

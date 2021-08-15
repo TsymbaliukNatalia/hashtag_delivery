@@ -165,11 +165,17 @@ class PackageController extends Controller
 
     public function getUserPackages(Request $req){
 
+        $opposite = [
+            'receiver' => 'sender',
+            'sender' => 'receiver'
+        ];
+
         $individual = $req->individual;
+        $individualOpposite = $opposite[$individual];
         
         $userId = Auth::guard('vendor')->user()->id;
         $packages = DB::table('packages as p' )
-        ->join( 'clients as  ' . $individual, DB::raw('p. '.$individual.'_id'), '=', DB::raw( $individual.'.id'))
+        ->join( 'clients as  ' . $individualOpposite, DB::raw('p. '.$individualOpposite.'_id'), '=', DB::raw( $individualOpposite.'.id'))
         ->join( 'points as pt', DB::raw('p.point_to'), '=', DB::raw('pt.id'))
         ->join( 'cities as ct', DB::raw('pt.city_id'), '=', DB::raw('ct.id'))
         ->join( 'points as pf', DB::raw('p.point_from'), '=', DB::raw('pf.id'))
@@ -177,20 +183,19 @@ class PackageController extends Controller
         ->join( 'categories as cat', DB::raw('p.category_id'), '=', DB::raw('cat.id'))
         ->join( 'statuses as st', DB::raw('p.status_id'), '=', DB::raw('st.id'))
         ->select( DB::raw( 'p.id as package_number,'.
-        $individual.'.name as sender_name,'.
-        $individual.'.surname as sender_surname,'.
-        $individual.'.middle_name sender_middle_name,'.
-        $individual.'.phone as sender_phone,
+        $individualOpposite.'.name as sender_name,'.
+        $individualOpposite.'.surname as sender_surname,'.
+        $individualOpposite.'.middle_name sender_middle_name,'.
+        $individualOpposite.'.phone as sender_phone,
         pt.adress as adress_to,
         ct.name as city_to,
-        pf.adress as adress_from,
-        cf.name as city_from,
         p.weight as weight,
         p.created_at as created_at,
         p.price as price,
+        p.payment as payment,
         cat.name as category,
         st.name as status'))
-        ->where(DB::raw('p.sender_id'), '=', $userId);
+        ->where(DB::raw('p.'.$individual.'_id'), '=', $userId);
 
         if($req->is_active == 1) {
             $packages->whereNotIn(DB::raw('p.status_id'), [4, 10]);

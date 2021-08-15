@@ -40438,18 +40438,38 @@ validateCostFields.forEach(function (field) {
 });
 $('#calculate_cost').click(function (e) {
   ajaxCalculateCostPackage();
-});
+}); //знаходимо посилки по замовчуванню
+
+var is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+var individual = 'receiver';
 $(document).ready(function () {
   if ($('package_table')) {
-    ajaxGetUserPackages('receiver');
+    ajaxGetUserPackages(individual);
   }
 
-  ajaxGetIncomingPackageCount('sender');
-});
+  ajaxPackageCount('sender', is_active);
+  ajaxPackageCount('receiver', is_active);
+}); //  знаходимо посилки відповідно до статусу активності
+
 $('#customSwitches').change(function (e) {
-  var is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-  ajaxGetUserPackages('receiver', is_active);
-  ajaxGetIncomingPackageCount('sender', is_active);
+  is_active = $('#customSwitches').prop('checked') ? 1 : 0;
+  ajaxGetUserPackages(individual, is_active);
+  ajaxPackageCount('sender', is_active);
+  ajaxPackageCount('receiver', is_active);
+}); //вибір вихідних посилок
+
+$('#sent').click(function () {
+  individual = 'sender';
+  toggleActivePackages(individual);
+  $('.individual').text('ПІБ отримувача');
+  $('.individual-phone').text('Телефон отримувача');
+}); //вибір вхідних посилок
+
+$('#incoming').click(function () {
+  individual = 'receiver';
+  toggleActivePackages(individual);
+  $('.individual').text('ПІБ відправника');
+  $('.individual-phone').text('Телефон відправника');
 });
 
 function ajaxGetInfoSender(sender_phone) {
@@ -40633,16 +40653,17 @@ function ajaxGetUserPackages(individual) {
       if ($('.package_table') && data.length > 0) {
         for (var i = 0; i < data.length; i++) {
           var price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
-          var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td>".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
+          var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
           $('.package_table tbody').append(newRow);
         }
       }
     },
     error: function error(data, textStatus, errorThrown) {}
   });
-}
+} //кількість посилок
 
-function ajaxGetIncomingPackageCount(individual) {
+
+function ajaxPackageCount(individual) {
   var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   $.ajax({
     type: "POST",
@@ -40653,13 +40674,20 @@ function ajaxGetIncomingPackageCount(individual) {
     },
     success: function success(data) {
       if (individual == 'sender') {
-        $('#incoming_count').text(data);
-      } else if (individual == 'receiver') {
         $('#sent_count').text(data);
+      } else if (individual == 'receiver') {
+        $('#incoming_count').text(data);
       }
     },
     error: function error(data, textStatus, errorThrown) {}
   });
+} // перемикаємо тип посилок
+
+
+function toggleActivePackages(individual) {
+  $('#incoming').toggleClass('no_active_text');
+  $('#sent').toggleClass('no_active_text');
+  ajaxGetUserPackages(individual, is_active);
 }
 
 /***/ }),

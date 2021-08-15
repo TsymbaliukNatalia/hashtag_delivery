@@ -11077,3 +11077,7 @@ body {
   margin-top: 50px;
 }
 
+.no-active {
+  display: none;
+}
+

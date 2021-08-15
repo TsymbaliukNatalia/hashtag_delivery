@@ -44,10 +44,10 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-2">
-                    <p class="big_text">Вхідні (<span id="incoming_count">0</span>)</p>
+                    <p class="big_text"  id="incoming">Вхідні (<span id="incoming_count">0</span>)</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="big_text no_active_text">Вихідні (<span id="sent_count">0</span>)</p>
+                    <p class="big_text no_active_text" id="sent">Вихідні (<span id="sent_count">0</span>)</p>
                 </div>
             </div>
             <div class="row">
@@ -74,8 +74,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">Номер ЕН</th>
-                                <th scope="col">ПІБ відправника</th>
-                                <th scope="col">Телефон відправника</th>
+                                <th scope="col" class="individual">ПІБ відправника</th>
+                                <th scope="col" class="individual-phone">Телефон відправника</th>
                                 <th scope="col">Номер відділення та адреса доставки</th>
                                 <th scope="col">Вага</th>
                                 <th scope="col">Категорія посилки</th>
