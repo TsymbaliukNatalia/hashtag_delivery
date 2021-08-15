@@ -88,11 +88,13 @@ $(document).ready(function (){
     if($('package_table')){
         ajaxGetUserPackages('receiver');
     }
+    ajaxGetIncomingPackageCount('sender');
  });
 
  $('#customSwitches').change(function(e){
     let is_active = $('#customSwitches').prop('checked') ? 1 : 0;
     ajaxGetUserPackages('receiver', is_active);
+    ajaxGetIncomingPackageCount('sender', is_active);
 });
  
 
@@ -254,6 +256,7 @@ function ajaxGetInfoPackage(package_number){
     });
 }
 
+// дістаємо всі посилки даного користувача по заданим критеріям
 function ajaxGetUserPackages(individual, is_active = 0){
     $.ajax({
         type: "POST",
@@ -285,6 +288,28 @@ function ajaxGetUserPackages(individual, is_active = 0){
         },
         error: function (data, textStatus, errorThrown) {
            
+        },
+    });
+}
+
+function ajaxGetIncomingPackageCount(individual, is_active = 0){
+    $.ajax({
+        type: "POST",
+        url: 'get_packages_count',
+        data: {
+            individual: individual,
+            is_active : is_active
+        },
+        success: function (data) {
+           console.log(data);
+           if(individual == 'sender'){
+            $('#incoming_count').text(data);
+           } else if (individual == 'receiver'){
+            $('#sent_count').text(data);
+           }
+        },
+        error: function (data, textStatus, errorThrown) {
+            
         },
     });
 }

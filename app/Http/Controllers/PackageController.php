@@ -199,8 +199,22 @@ class PackageController extends Controller
         if($req->is_active == 1) {
             $packages->whereNotIn(DB::raw('p.status_id'), [4, 10]);
         }
-        
+
         return response()->json($packages->get());
+    }
+
+    public function getPackagesCount(Request $req){
+
+        $individual = $req->individual;
+        $userId = Auth::guard('vendor')->user()->id;
+        $packages = DB::table('packages')
+        ->where($individual.'_id', '=', $userId);
+
+        if($req->is_active == 1) {
+            $packages->whereNotIn('status_id', [4, 10]);
+        };
+
+        return response()->json($packages->count());
     }
     
 }

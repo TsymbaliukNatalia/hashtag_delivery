@@ -40443,10 +40443,13 @@ $(document).ready(function () {
   if ($('package_table')) {
     ajaxGetUserPackages('receiver');
   }
+
+  ajaxGetIncomingPackageCount('sender');
 });
 $('#customSwitches').change(function (e) {
   var is_active = $('#customSwitches').prop('checked') ? 1 : 0;
   ajaxGetUserPackages('receiver', is_active);
+  ajaxGetIncomingPackageCount('sender', is_active);
 });
 
 function ajaxGetInfoSender(sender_phone) {
@@ -40611,7 +40614,8 @@ function ajaxGetInfoPackage(package_number) {
       $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
     }
   });
-}
+} // дістаємо всі посилки даного користувача по заданим критеріям
+
 
 function ajaxGetUserPackages(individual) {
   var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -40631,6 +40635,28 @@ function ajaxGetUserPackages(individual) {
           var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td>".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
           $('.package_table tbody').append(newRow);
         }
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+}
+
+function ajaxGetIncomingPackageCount(individual) {
+  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  $.ajax({
+    type: "POST",
+    url: 'get_packages_count',
+    data: {
+      individual: individual,
+      is_active: is_active
+    },
+    success: function success(data) {
+      console.log(data);
+
+      if (individual == 'sender') {
+        $('#incoming_count').text(data);
+      } else if (individual == 'receiver') {
+        $('#sent_count').text(data);
       }
     },
     error: function error(data, textStatus, errorThrown) {}

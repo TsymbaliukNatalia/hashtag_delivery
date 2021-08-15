@@ -44,10 +44,10 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-2">
-                    <p class="big_text">Вхідні (<span>0</span>)</p>
+                    <p class="big_text">Вхідні (<span id="incoming_count">0</span>)</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="big_text no_active_text">Вихідні (<span>0</span>)</p>
+                    <p class="big_text no_active_text">Вихідні (<span id="sent_count">0</span>)</p>
                 </div>
             </div>
             <div class="row">
