@@ -84,6 +84,11 @@ $('#calculate_cost').click(function(e){
     ajaxCalculateCostPackage();
 });
 
+$(document).ready(function (){
+    if($('package_table')){
+        ajaxGetUserPackages('receiver');
+    }
+ });
 
 function ajaxGetInfoSender(sender_phone){
     $.ajax({
@@ -239,6 +244,40 @@ function ajaxGetInfoPackage(package_number){
         error: function (data, textStatus, errorThrown) {
             $('#info_about_package').empty();
             $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
+        },
+    });
+}
+
+function ajaxGetUserPackages(individual, is_active = 0){
+    $.ajax({
+        type: "POST",
+        url: "get_packages_for_user",
+        data: {
+            individual: individual,
+            is_active : is_active
+        },
+        success: function (data) {
+            if($('.package_table') && data.length > 0){
+                for(let i = 0; i < data.length; i++){
+                    let price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
+                
+                    let newRow = $("<tr></tr>")
+                    .append(`<td>${data[i]['package_number']}</td>`)
+                    .append(`<td>${data[i]['sender_surname']} ${data[i]['sender_name']} ${data[i]['sender_middle_name']}</td>`)
+                    .append(`<td>${data[i]['sender_phone']}</td>`)
+                    .append(`<td>${data[i]['city_to']}, ${data[i]['adress_to']}</td>`)
+                    .append(`<td>${data[i]['weight']} кг </td>`)
+                    .append(`<td>${data[i]['category']}</td>`)
+                    .append(`<td>${data[i]['created_at']}</td>`)
+                    .append(`<td>${price} грн</td>`)
+                    .append(`<td>${data[i]['status']}</td>`)
+                
+                     $('.package_table tbody').append(newRow); 
+                }
+            }
+        },
+        error: function (data, textStatus, errorThrown) {
+           
         },
     });
 }

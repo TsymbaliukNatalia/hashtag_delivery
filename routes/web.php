@@ -8,25 +8,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('start');
 
-// Route::get('/admin', function () {
-//     return view('admin');
-// })->name('admin');
-
-
-
-
 
 Route::post('get_points', 'PackageController@getCityPoints')->name('get_points');
-
 Route::post('calculate_package_cost', 'PackageController@getPackageCost')->name('calculate_package_cost');
-
-
-
 Route::get('/points', 'PackageController@getCity')->name('points');
 Route::get('/calculate', 'PackageController@getPackageCalculateInfo')->name('calculate');
-
 Route::post('get_package_info_number', 'PackageController@getInfoPackageByNumber')->name('get_package_info_number');
-
 
 Auth::routes();
 
@@ -62,4 +49,6 @@ Route::group(['prefix' => 'vendor'], function () {
   Route::post('/password/reset', 'VendorAuth\ResetPasswordController@reset')->name('password.email');
   Route::get('/password/reset', 'VendorAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'VendorAuth\ResetPasswordController@showResetForm');
+  Route::post('get_packages_for_user', 'PackageController@getUserPackages')->name('get_packages_for_user');
+
 });

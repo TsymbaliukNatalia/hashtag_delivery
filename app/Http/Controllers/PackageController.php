@@ -16,7 +16,8 @@ use App\Status;
 use App\Point;
 use App\History_status;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
+use Auth;
+// use Illuminate\Support\Facades\Auth;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
 
 
@@ -164,6 +165,38 @@ class PackageController extends Controller
         $package_info["date"] = date("d-m-Y", strtotime($date.'+ 1 days'));
         
         return response()->json($package_info);
+    }
+
+    public function getUserPackages(Request $req){
+
+        $individual = $req->individual;
+        
+        $userId = Auth::guard('vendor')->user()->id;
+        $packages = DB::table('packages as p' )
+        ->join( 'clients as  ' . $individual, DB::raw('p. '.$individual.'_id'), '=', DB::raw( $individual.'.id'))
+        ->join( 'points as pt', DB::raw('p.point_to'), '=', DB::raw('pt.id'))
+        ->join( 'cities as ct', DB::raw('pt.city_id'), '=', DB::raw('ct.id'))
+        ->join( 'points as pf', DB::raw('p.point_from'), '=', DB::raw('pf.id'))
+        ->join( 'cities as cf', DB::raw('pf.city_id'), '=', DB::raw('cf.id'))
+        ->join( 'categories as cat', DB::raw('p.category_id'), '=', DB::raw('cat.id'))
+        ->join( 'statuses as st', DB::raw('p.status_id'), '=', DB::raw('st.id'))
+        ->select( DB::raw( 'p.id as package_number,'.
+        $individual.'.name as sender_name,'.
+        $individual.'.surname as sender_surname,'.
+        $individual.'.middle_name sender_middle_name,'.
+        $individual.'.phone as sender_phone,
+        pt.adress as adress_to,
+        ct.name as city_to,
+        pf.adress as adress_from,
+        cf.name as city_from,
+        p.weight as weight,
+        p.created_at as created_at,
+        p.price as price,
+        cat.name as category,
+        st.name as status'))
+        ->where(DB::raw('p.sender_id'), '=', $userId);
+      
+        return response()->json($packages->get());
     }
     
 }

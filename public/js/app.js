@@ -40439,6 +40439,11 @@ validateCostFields.forEach(function (field) {
 $('#calculate_cost').click(function (e) {
   ajaxCalculateCostPackage();
 });
+$(document).ready(function () {
+  if ($('package_table')) {
+    ajaxGetUserPackages('receiver');
+  }
+});
 
 function ajaxGetInfoSender(sender_phone) {
   $.ajax({
@@ -40601,6 +40606,28 @@ function ajaxGetInfoPackage(package_number) {
       $('#info_about_package').empty();
       $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
     }
+  });
+}
+
+function ajaxGetUserPackages(individual) {
+  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  $.ajax({
+    type: "POST",
+    url: "get_packages_for_user",
+    data: {
+      individual: individual,
+      is_active: is_active
+    },
+    success: function success(data) {
+      if ($('.package_table') && data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
+          var price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
+          var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td>".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
+          $('.package_table tbody').append(newRow);
+        }
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
   });
 }
 
