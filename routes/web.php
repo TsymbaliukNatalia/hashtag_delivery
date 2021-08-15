@@ -35,6 +35,8 @@ Route::group(['prefix' => 'admin'], function () {
   Route::post('sender_info', 'PackageController@getSenderInfo')->name('sender_info');
   Route::post('recipient_info', 'PackageController@getRecipientInfo')->name('recipient_info');
   Route::post('add_new_package', 'PackageController@addNewPackage')->name('add_new_package');
+  Route::post('get_points', 'PackageController@getCityPoints')->name('get_points');
+  Route::post('calculate_package_cost', 'PackageController@getPackageCost')->name('calculate_package_cost');
 });
 
 Route::group(['prefix' => 'vendor'], function () {

@@ -33,6 +33,7 @@ $('#phone_recipient').keydown(function(e){
     }
 });
 
+
 // при зміні міста підтягуємо його відділення
 $('#city_recipient').change(function(e){
     let city = $('#city_recipient').val();
@@ -172,6 +173,7 @@ function ajaxGetCityPoints(city){
         url: 'get_points',
         data: { city : city},
         success: function (data) {
+            console.log(data, city);
             $('#point_recipient').empty();
             data.forEach(function(point){
                 $('#point_recipient').append("<option value="+ point['id'] + ">"+ point['name'] + ' - '+ point['adress'] +"</option>");
@@ -301,7 +303,6 @@ function ajaxGetIncomingPackageCount(individual, is_active = 0){
             is_active : is_active
         },
         success: function (data) {
-           console.log(data);
            if(individual == 'sender'){
             $('#incoming_count').text(data);
            } else if (individual == 'receiver'){

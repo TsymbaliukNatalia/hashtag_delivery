@@ -40534,6 +40534,7 @@ function ajaxGetCityPoints(city) {
       city: city
     },
     success: function success(data) {
+      console.log(data, city);
       $('#point_recipient').empty();
       data.forEach(function (point) {
         $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
@@ -40651,8 +40652,6 @@ function ajaxGetIncomingPackageCount(individual) {
       is_active: is_active
     },
     success: function success(data) {
-      console.log(data);
-
       if (individual == 'sender') {
         $('#incoming_count').text(data);
       } else if (individual == 'receiver') {

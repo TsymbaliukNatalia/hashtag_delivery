@@ -65,6 +65,7 @@
                     <div class="form-group col-md-6">
                         <label for="city_recipient">Місто отримувача:</label>
                         <select class="form-control" id="city_recipient" name="city_recipient">
+                        <option>1</option>
                             @foreach($cities as $city)
                                 <option>{{ $city->name }}</option>
                             @endforeach

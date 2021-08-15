@@ -77,10 +77,6 @@ class PackageController extends Controller
     }
 
     public function addNewPackage(AllPackageRequest $req){
-        // $recipient_phone = $req->input('phone_recipient');
-        
-        // DB::transaction(function(){
-        //     global $req;
             $sender_phone = Client::where('phone', $req->input('phone_sender'))->first();
         if($sender_phone == null){
             $sender = new Client;
@@ -136,7 +132,7 @@ class PackageController extends Controller
             $history_status->status_id = $package->status_id;
             $history_status->employee_id = $package->employee_id;
             $history_status->save();
-            return view('admin', [
+            return view('admin/check', [
                 'res' => true
             ]);
     }
