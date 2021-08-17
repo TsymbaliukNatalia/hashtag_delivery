@@ -40481,6 +40481,10 @@ $('#incoming').click(function () {
 $('#user-settings-button').click(function () {
   ajaxGetInfoUser();
 });
+$('#change_info').click(function () {
+  var form = $('#change_user_info_form');
+  ajaxChangeUserInfo(form);
+});
 
 function ajaxGetInfoSender(sender_phone) {
   $.ajax({
@@ -40736,6 +40740,27 @@ function ajaxGetInfoUser() {
       }
     },
     error: function error(data, textStatus, errorThrown) {}
+  });
+} // зберігаємо зміни в інформації про користувача
+
+
+function ajaxChangeUserInfo(form) {
+  $.ajax({
+    type: "POST",
+    url: 'change_user',
+    data: form.serialize(),
+    success: function success(data) {
+      console.log(data);
+    },
+    error: function error(data, textStatus, errorThrown) {
+      var resporse = data.responseJSON;
+      var errors = resporse['errors'];
+      var $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
+      $errorsDiv.prependTo($("#user_info_modal_body"));
+      $.each(errors, function (index, value) {
+        $('.alert-danger').append('<li>' + value + '</li>');
+      });
+    }
   });
 }
 

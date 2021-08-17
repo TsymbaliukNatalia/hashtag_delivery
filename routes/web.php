@@ -55,5 +55,6 @@ Route::group(['prefix' => 'vendor'], function () {
   Route::post('get_packages_count', 'PackageController@getPackagesCount')->name('get_packages_count');
   Route::post('user_info', 'ClientController@getClientStartInfo')->name('user_info');
   Route::post('get_points', 'PackageController@getCityPoints')->name('get_points');
+  Route::post('change_user', 'ClientController@changeClientInfo')->name('change_user');
 
 });

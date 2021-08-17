@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Client;
@@ -29,6 +30,13 @@ class ClientController extends Controller {
         $response['city_id'] = $city_id;
 
         return response()->json($response);
+    }
+
+    public function changeClientInfo(ClientRequest $req) {
+
+        $user_id = Auth::guard('vendor')->user()->id;
+        
+        return response()->json($req);
     }
 
 }
