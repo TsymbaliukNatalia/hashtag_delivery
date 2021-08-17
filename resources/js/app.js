@@ -401,12 +401,15 @@ function ajaxChangeUserInfo(form) {
         url: 'change_user',
         data: form.serialize(),
         success: function(data) {
-            console.log(data);
+            if (data['res']) {
+                $('#user_info_errors').remove();
+                $("#cancel_change_info").trigger("click");
+            }
         },
         error: function(data, textStatus, errorThrown) {
             let resporse = data.responseJSON;
             let errors = resporse['errors'];
-            let $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
+            let $errorsDiv = $('<div class="alert alert-danger" id="user_info_errors"><ul></ul></div>');
             $errorsDiv.prependTo($("#user_info_modal_body"));
             $.each(errors, function(index, value) {
                 $('.alert-danger').append('<li>' + value + '</li>');

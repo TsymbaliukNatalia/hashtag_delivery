@@ -86,7 +86,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Вийти без збереження</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel_change_info">Вийти без збереження</button>
                     <button type="button" class="btn btn-primary" id="change_info">Зберегти зміни</button>
                 </div>
             </div>

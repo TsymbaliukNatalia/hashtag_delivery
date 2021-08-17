@@ -34,9 +34,24 @@ class ClientController extends Controller {
 
     public function changeClientInfo(ClientRequest $req) {
 
-        $user_id = Auth::guard('vendor')->user()->id;
-        
-        return response()->json($req);
+        $user = Vendor::find(Auth::guard('vendor')->user()->id);
+        $client = Client::where('phone', $user->phone)->first();
+
+        $user->name = $req->name_user;
+        $user->phone = $req->phone_user;
+        $user->save();
+
+        $client->phone = $req->phone_user;
+        $client->surname = $req->surname_user;
+        $client->name = $req->name_user;
+        $client->middle_name = $req->middle_name_user;
+        if(isset($req->point_user)){
+            $client->point_default_id = $req->point_user;
+        }
+        $client->save();
+        $response['res'] = true;
+
+        return response()->json($response);
     }
 
 }
