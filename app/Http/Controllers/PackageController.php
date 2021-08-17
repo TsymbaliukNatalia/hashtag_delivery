@@ -16,7 +16,8 @@ use App\Status;
 use App\Point;
 use App\History_status;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+// use Auth;
 // use Illuminate\Support\Facades\Auth;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
 
@@ -52,9 +53,8 @@ class PackageController extends Controller
     }
     public function getCityPoints(Request $req){
 
-        $city_name = $req->input('city');
-        $city = City::where('name', $city_name)->first();
-        $points = $city->points;
+        $city_id = $req->input('city');
+        $points = Point::where('city_id', $city_id)->get();
 
         return response()->json($points);
 

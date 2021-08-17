@@ -40382,6 +40382,9 @@ $(document).ready(function () {
     "mask": "+380999999999"
   }).mask('#phone');
   Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone_user');
+  Inputmask({
     "mask": "999999"
   }).mask('#search_package');
 }); // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
@@ -40407,6 +40410,10 @@ $('#city_recipient').change(function (e) {
 
 $('#city_list').change(function (e) {
   var city = $('#city_list').val();
+  ajaxGetCityPointsList(city);
+});
+$('#city_user').change(function (e) {
+  var city = $('#city_user').val();
   ajaxGetCityPointsList(city);
 }); // при натисканні кнопки "Оформити посилку" відправляємо запит на створення нової посилки
 
@@ -40471,6 +40478,9 @@ $('#incoming').click(function () {
   $('.individual').text('ПІБ відправника');
   $('.individual-phone').text('Телефон відправника');
 });
+$('#user-settings-button').click(function () {
+  ajaxGetInfoUser();
+});
 
 function ajaxGetInfoSender(sender_phone) {
   $.ajax({
@@ -40479,9 +40489,6 @@ function ajaxGetInfoSender(sender_phone) {
     data: {
       phone_sender: sender_phone
     },
-    // beforeSend: function (request){
-    //     return request.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
-    // },
     success: function success(data) {
       $('.alert-danger').remove();
       $('.sender_info_box').css('display', 'flex');
@@ -40554,7 +40561,6 @@ function ajaxGetCityPoints(city) {
       city: city
     },
     success: function success(data) {
-      console.log(data, city);
       $('#point_recipient').empty();
       data.forEach(function (point) {
         $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
@@ -40575,7 +40581,7 @@ function ajaxGetCityPointsList(city) {
     success: function success(data) {
       $('.points_list').empty();
       data.forEach(function (point) {
-        $('.points_list').append("<li>" + point['name'] + ' - ' + point['adress'] + "</li>");
+        $('.points_list').append('<option value="' + point['id'] + '">' + point['name'] + ' - ' + point['adress'] + '</option>');
       });
     },
     error: function error(data, textStatus, errorThrown) {}
@@ -40688,6 +40694,49 @@ function toggleActivePackages(individual) {
   $('#incoming').toggleClass('no_active_text');
   $('#sent').toggleClass('no_active_text');
   ajaxGetUserPackages(individual, is_active);
+} // отримуємо інформацію про власника кабінету
+
+
+function ajaxGetInfoUser() {
+  $.ajax({
+    type: "POST",
+    url: 'user_info',
+    success: function success(data) {
+      if (data['user_info']['phone']) {
+        $('#phone_user').val(data['user_info']['phone']);
+      }
+
+      if (data['user_info']['surname']) {
+        $('#surname_user').val(data['user_info']['surname']);
+      }
+
+      if (data['user_info']['name']) {
+        $('#name_user').val(data['user_info']['name']);
+      }
+
+      if (data['user_info']['middle_name']) {
+        $('#middle_name_user').val(data['user_info']['middle_name']);
+      }
+
+      if (!data['user_info']['point_default_id'] && !data['city_id']) {
+        $('#city_user').append('<option disabled selected>Виберiть місто</option>');
+        $('#point_user').append('<option disabled selected>Виберiть відділення</option>');
+      }
+
+      data['points'].forEach(function (city) {
+        $('#city_user').append('<option value="' + city['id'] + '">' + city['name'] + '</option>');
+      });
+
+      if (data['city_id']) {
+        $("#city_user option[value=".concat(data['city_id'], "]")).prop('selected', true);
+        $("#city_user").trigger("change");
+        setTimeout(function () {
+          $("#point_user option[value=".concat(data['user_info']['point_default_id'], "]")).prop('selected', true);
+        }, 200);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
 }
 
 /***/ }),

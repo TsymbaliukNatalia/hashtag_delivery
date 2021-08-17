@@ -53,5 +53,7 @@ Route::group(['prefix' => 'vendor'], function () {
   Route::get('/password/reset/{token}', 'VendorAuth\ResetPasswordController@showResetForm');
   Route::post('get_packages_for_user', 'PackageController@getUserPackages')->name('get_packages_for_user');
   Route::post('get_packages_count', 'PackageController@getPackagesCount')->name('get_packages_count');
+  Route::post('user_info', 'ClientController@getClientStartInfo')->name('user_info');
+  Route::post('get_points', 'PackageController@getCityPoints')->name('get_points');
 
 });

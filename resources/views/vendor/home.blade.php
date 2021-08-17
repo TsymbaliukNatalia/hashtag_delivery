@@ -16,7 +16,7 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 justify-content-end home_menu">
 
         <nav class="my-2 my-md-0 mr-md-3">
-            <a class="btn btn-primary" href="" role="button">
+            <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target="#userModal" id="user-settings-button">
                 Настройки профілю
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                     <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
@@ -32,6 +32,65 @@
             </a>
         </nav>
 
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Інформація про мене</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="phone_user">Телефон:</label>
+                        <input type="text" class="form-control" id="phone_user" name="phone_user" value="">
+                    </div>
+                </div>
+                <div class="form-row user_info_box">
+                    <div class="form-group col-md-4">
+                        <label for="surname_user">Прізвищe:</label>
+                        <input type="text" class="form-control" id="surname_user" name="surname_user" placeholder="">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="name_user">Ім`я:</label>
+                        <input type="text" class="form-control" id="name_user" name="name_user" placeholder="">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="middle_name_user">По батькові:</label>
+                        <input type="text" class="form-control" id="middle_name_user" name="middle_name_user" placeholder="">
+                    </div>
+                </div>
+                <div>
+                    <p>Відділення за замовчуванням для отримання посилок: </p>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="city_user">Місто:</label>
+                        <select class="form-control" id="city_user" name="city_user">
+                           
+                        </select>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="point_user">Відділення:</label>
+                        <select class="form-control points_list" id="point_user" name="point_user">
+                
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            <button type="button" class="btn btn-primary">Зберегти зміни</button>
+        </div>
+        </div>
+    </div>
     </div>
 
     @if (session('status'))

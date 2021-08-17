@@ -16,15 +16,15 @@
                         <label for="city_list">Виберіть місто:</label>
                         <select class="form-control" id="city_list" name="city_list">
                             @foreach($cities as $city)
-                                <option>{{ $city->name }}</option>
+                                <option value="{{ $city->id }}">{{ $city->name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
-                    <ul class="form-group col-md-6 points_list">
+                    <select class="form-control col-md-6 points_list">
                         
-                    </ul>
+                    </select>
                 </div>
                 
             </form>
