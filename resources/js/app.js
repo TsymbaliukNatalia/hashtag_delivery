@@ -373,6 +373,7 @@ function ajaxGetInfoUser() {
             if (data['user_info']['middle_name']) {
                 $('#middle_name_user').val(data['user_info']['middle_name']);
             }
+            $('#city_user').empty();
             if (!data['user_info']['point_default_id'] && !data['city_id']) {
                 $('#city_user').append('<option disabled selected>Виберiть місто</option>');
                 $('#point_user').append('<option disabled selected>Виберiть відділення</option>');
@@ -385,7 +386,7 @@ function ajaxGetInfoUser() {
                 $("#city_user").trigger("change");
                 setTimeout(function() {
                     $(`#point_user option[value=${data['user_info']['point_default_id']}]`).prop('selected', true);
-                }, 200);
+                }, 250);
             }
         },
         error: function(data, textStatus, errorThrown) {
