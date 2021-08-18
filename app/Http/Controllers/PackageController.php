@@ -144,6 +144,15 @@ class PackageController extends Controller
 
     }
 
+    public function getCityAjax(){
+
+        return response()->json([
+            'cities' => City::all()
+        ]);
+
+    }
+
+
     public function getPackageCalculateInfo(){
         
         return view('calculate', [

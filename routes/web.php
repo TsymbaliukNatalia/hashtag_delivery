@@ -57,5 +57,6 @@ Route::group(['prefix' => 'vendor'], function () {
   Route::post('get_points', 'PackageController@getCityPoints')->name('get_points');
   Route::post('change_user', 'ClientController@changeClientInfo')->name('change_user');
   Route::post('get_package_info_for_user', 'PackageController@getPackageInfoForUser')->name('get_package_info_for_user');
+  Route::post('get_cities', 'PackageController@getCityAjax')->name('get_cities');
 
 });

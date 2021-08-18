@@ -90,6 +90,9 @@ $('#calculate_cost').click(function(e) {
     ajaxCalculateCostPackage();
 });
 
+if ($('#filterModal')) {
+    ajaxGetCities();
+}
 
 if ($("#home_menu")) {
     //знаходимо посилки по замовчуванню
@@ -114,7 +117,7 @@ if ($("#home_menu")) {
     //вибір вихідних посилок
     $("#sent").click(function() {
         individual = "sender";
-        toggleActivePackages(individual);
+        toggleActivePackages(individual, is_active);
         $(".individual").text("ПІБ отримувача");
         $(".individual-phone").text("Телефон отримувача");
     });
@@ -361,7 +364,7 @@ function ajaxPackageCount(individual, is_active = 0) {
 }
 
 // перемикаємо тип посилок
-function toggleActivePackages(individual) {
+function toggleActivePackages(individual, is_active) {
     $('#incoming').toggleClass('no_active_text');
     $('#sent').toggleClass('no_active_text');
     ajaxGetUserPackages(individual, is_active);
@@ -473,6 +476,21 @@ function ajaxGetInfoAboutPackage(package_number) {
 
                 $('.one_package_table tbody').append(newRow);
             }
+        },
+        error: function(data, textStatus, errorThrown) {
+
+        },
+    });
+}
+
+function ajaxGetCities() {
+    $.ajax({
+        type: "POST",
+        url: 'get_cities',
+        success: function(data) {
+            data['cities'].forEach(function(city) {
+                $('#city_filter').append("<option value=" + city['id'] + ">" + city['name'] + "</option>");
+            });
         },
         error: function(data, textStatus, errorThrown) {
 

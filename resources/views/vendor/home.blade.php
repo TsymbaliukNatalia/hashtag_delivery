@@ -128,13 +128,13 @@
                             <div class="form-group col-md-6">
                                 <label for="city_filter">Місто:</label>
                                 <select class="form-control" id="city_filter" name="city_filter">
-
+                                    <option selected>Виберіть місто</option>
                                 </select>
                             </div>
                             <div class="form-group  col-md-6">
                                 <label for="point_filter">Відділення:</label>
                                 <select class="form-control points_list" id="point_filter" name="point_filter">
-
+                                    <option selected>Виберіть відділення</option>
                                 </select>
                             </div>
                         </div>
@@ -224,7 +224,7 @@
                 </div>
                 <div class="col-md-5"></div>
                 <div class="col-md-2">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фільтри</button>
+                    <button class="btn btn-primary" data-toggle="modal" id="filters" data-target="#filterModal">Фільтри</button>
                 </div>
                 <div class="input-group rounded float-right col-md-3">
                     <input type="search" class="form-control rounded search_package_home_input" id="search_package_user" placeholder="Введіть номер посилки" aria-label="Search" aria-describedby="search-addon" />
