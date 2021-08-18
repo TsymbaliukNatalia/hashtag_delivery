@@ -140,7 +140,7 @@ if ($("#home_menu")) {
         $('#filter_form').find('input, select, date').each(function() {
             filter_params[this.name] = $(this).val();
         });
-        ajaxGetUserPackages(individual, is_active = 0, filter_params)
+        ajaxGetUserPackages(individual, is_active = 0, filter_params);
     });
 
     $("#user-settings-button").click(function() {

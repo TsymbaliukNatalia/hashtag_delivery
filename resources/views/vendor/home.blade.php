@@ -155,7 +155,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel_change_info">Відмінити</button>
-                    <button type="button" class="btn btn-primary" id="use_filter">Застосувати фільтри</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="use_filter">Застосувати фільтри</button>
                 </div>
             </div>
         </div>
