@@ -93,6 +93,74 @@
         </div>
     </div>
 
+    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="user_info_modal_body">
+                    <form id="change_user_info_form">
+                        <div>
+                            <p>Одержувач: </p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="phone_filter">Телефон:</label>
+                                <input type="text" class="form-control" id="phone_filter" name="phone_filter" value="">
+                            </div>
+                        </div>
+                        <div class="form-row user_info_box">
+                            <div class="form-group col-md-4">
+                                <label for="surname_filter">Прізвищe:</label>
+                                <input type="text" class="form-control" id="surname_filter" name="surname_filter" placeholder="">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="name_filter">Ім`я:</label>
+                                <input type="text" class="form-control" id="name_filter" name="name_filter" placeholder="">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="middle_name_filter">По батькові:</label>
+                                <input type="text" class="form-control" id="middle_name_filter" name="middle_name_filter" placeholder="">
+                            </div>
+                        </div>
+                        <div>
+                            <p>Відділення: </p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="city_filter">Місто:</label>
+                                <select class="form-control" id="city_filter" name="city_filter">
+
+                                </select>
+                            </div>
+                            <div class="form-group  col-md-6">
+                                <label for="point_filter">Відділення:</label>
+                                <select class="form-control points_list" id="point_filter" name="point_filter">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <p>Дата: </p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label for="dates_filter_start">З:</label>
+                                <input type="date" class="form-control" id="dates_filter_start" name="date_start" placeholder="">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="dates_filter_end">По:</label>
+                                <input type="date" class="form-control" id="dates_filter_end" name="date_end" placeholder="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel_change_info">Відмінити</button>
+                    <button type="button" class="btn btn-primary" id="change_info">Застосувати фільтри</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <button type="button" class="btn btn-primary no-active" id="package_on_info_button" data-toggle="modal" data-target=".bd-package-info-modal-xl"></button>
 
     <div class="modal fade bd-package-info-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -156,7 +224,7 @@
                 </div>
                 <div class="col-md-5"></div>
                 <div class="col-md-2">
-                    <button class="btn btn-primary">Фільтри</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фільтри</button>
                 </div>
                 <div class="input-group rounded float-right col-md-3">
                     <input type="search" class="form-control rounded search_package_home_input" id="search_package_user" placeholder="Введіть номер посилки" aria-label="Search" aria-describedby="search-addon" />

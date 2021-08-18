@@ -15,6 +15,7 @@ $(document).ready(function() {
     Inputmask({ "mask": "+380999999999" }).mask('#phone_recipient');
     Inputmask({ "mask": "+380999999999" }).mask('#phone');
     Inputmask({ "mask": "+380999999999" }).mask('#phone_user');
+    Inputmask({ "mask": "+380999999999" }).mask('#phone_filter');
     Inputmask({ "mask": "999999" }).mask('#search_package');
     Inputmask({ "mask": "999999" }).mask('#search_package_user');
 });
@@ -89,58 +90,60 @@ $('#calculate_cost').click(function(e) {
     ajaxCalculateCostPackage();
 });
 
-//знаходимо посилки по замовчуванню
-let is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-let individual = 'receiver';
-$(document).ready(function() {
-    if ($('package_table')) {
-        ajaxGetUserPackages(individual);
-    }
-    ajaxPackageCount('sender', is_active);
-    ajaxPackageCount('receiver', is_active);
-});
 
-//  знаходимо посилки відповідно до статусу активності
-$('#customSwitches').change(function(e) {
-    is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-    ajaxGetUserPackages(individual, is_active);
-    ajaxPackageCount('sender', is_active);
-    ajaxPackageCount('receiver', is_active);
-});
+if ($("#home_menu")) {
+    //знаходимо посилки по замовчуванню
+    let is_active = $("#customSwitches").prop("checked") ? 1 : 0;
+    let individual = "receiver";
+    $(document).ready(function() {
+        if ($("package_table")) {
+            ajaxGetUserPackages(individual);
+        }
+        ajaxPackageCount("sender", is_active);
+        ajaxPackageCount("receiver", is_active);
+    });
 
-//вибір вихідних посилок
-$('#sent').click(function() {
-    individual = 'sender';
-    toggleActivePackages(individual);
-    $('.individual').text('ПІБ отримувача');
-    $('.individual-phone').text('Телефон отримувача');
-});
+    //  знаходимо посилки відповідно до статусу активності
+    $("#customSwitches").change(function(e) {
+        is_active = $("#customSwitches").prop("checked") ? 1 : 0;
+        ajaxGetUserPackages(individual, is_active);
+        ajaxPackageCount("sender", is_active);
+        ajaxPackageCount("receiver", is_active);
+    });
 
-//вибір вхідних посилок
-$('#incoming').click(function() {
-    individual = 'receiver';
-    toggleActivePackages(individual);
-    $('.individual').text('ПІБ відправника');
-    $('.individual-phone').text('Телефон відправника');
-});
+    //вибір вихідних посилок
+    $("#sent").click(function() {
+        individual = "sender";
+        toggleActivePackages(individual);
+        $(".individual").text("ПІБ отримувача");
+        $(".individual-phone").text("Телефон отримувача");
+    });
 
-$('#user-settings-button').click(function() {
-    ajaxGetInfoUser();
-});
+    //вибір вхідних посилок
+    $("#incoming").click(function() {
+        individual = "receiver";
+        toggleActivePackages(individual);
+        $(".individual").text("ПІБ відправника");
+        $(".individual-phone").text("Телефон відправника");
+    });
 
-$('#change_info').click(function() {
-    let form = $('#change_user_info_form');
-    ajaxChangeUserInfo(form);
-});
+    $("#user-settings-button").click(function() {
+        ajaxGetInfoUser();
+    });
 
-$('#search_package_user').keydown(function(e) {
-    if (e.keyCode == 13) {
-        let package_number = $('#search_package_user').val();
-        ajaxGetInfoAboutPackage(package_number);
-        $('#package_on_info_button').trigger("click");
-    }
-});
+    $("#change_info").click(function() {
+        let form = $("#change_user_info_form");
+        ajaxChangeUserInfo(form);
+    });
 
+    $("#search_package_user").keydown(function(e) {
+        if (e.keyCode == 13) {
+            let package_number = $("#search_package_user").val();
+            ajaxGetInfoAboutPackage(package_number);
+            $("#package_on_info_button").trigger("click");
+        }
+    });
+}
 
 
 function ajaxGetInfoSender(sender_phone) {

@@ -1,97 +1,11 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ({
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
   \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
 
@@ -101,14 +15,14 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/adapters/xhr.js ***!
   \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
 var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
 var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
@@ -129,7 +43,7 @@ module.exports = function xhrAdapter(config) {
     // HTTP basic authentication
     if (config.auth) {
       var username = config.auth.username || '';
-      var password = config.auth.password || '';
+      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
       requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
@@ -210,8 +124,6 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
-
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
         cookies.read(config.xsrfCookieName) :
@@ -277,7 +189,7 @@ module.exports = function xhrAdapter(config) {
       });
     }
 
-    if (requestData === undefined) {
+    if (!requestData) {
       requestData = null;
     }
 
@@ -293,8 +205,7 @@ module.exports = function xhrAdapter(config) {
 /*!*****************************************!*\
   !*** ./node_modules/axios/lib/axios.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -346,6 +257,9 @@ axios.all = function all(promises) {
 };
 axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
 
+// Expose isAxiosError
+axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
+
 module.exports = axios;
 
 // Allow use of default import syntax in TypeScript
@@ -358,8 +272,7 @@ module.exports.default = axios;
 /*!*************************************************!*\
   !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
   \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -389,8 +302,7 @@ module.exports = Cancel;
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -458,8 +370,7 @@ module.exports = CancelToken;
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
   \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -475,8 +386,7 @@ module.exports = function isCancel(value) {
 /*!**********************************************!*\
   !*** ./node_modules/axios/lib/core/Axios.js ***!
   \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -554,9 +464,10 @@ Axios.prototype.getUri = function getUri(config) {
 utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
-      url: url
+      url: url,
+      data: (config || {}).data
     }));
   };
 });
@@ -564,7 +475,7 @@ utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData
 utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, data, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
       url: url,
       data: data
@@ -581,8 +492,7 @@ module.exports = Axios;
 /*!***********************************************************!*\
   !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
   \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -645,8 +555,7 @@ module.exports = InterceptorManager;
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -677,8 +586,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/core/createError.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -707,8 +615,7 @@ module.exports = function createError(message, config, code, request, response) 
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
   \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -798,8 +705,7 @@ module.exports = function dispatchRequest(config) {
 /*!*****************************************************!*\
   !*** ./node_modules/axios/lib/core/enhanceError.js ***!
   \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -824,7 +730,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   error.response = response;
   error.isAxiosError = true;
 
-  error.toJSON = function() {
+  error.toJSON = function toJSON() {
     return {
       // Standard
       message: this.message,
@@ -852,8 +758,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -873,59 +778,73 @@ module.exports = function mergeConfig(config1, config2) {
   config2 = config2 || {};
   var config = {};
 
-  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
+  var valueFromConfig2Keys = ['url', 'method', 'data'];
+  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
   var defaultToConfig2Keys = [
-    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
-    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath'
+    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
+    'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
+    'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
   ];
+  var directMergeKeys = ['validateStatus'];
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  }
 
   utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
     }
   });
 
-  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
-    if (utils.isObject(config2[prop])) {
-      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
-    } else if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (utils.isObject(config1[prop])) {
-      config[prop] = utils.deepMerge(config1[prop]);
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
 
   utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  });
+
+  utils.forEach(directMergeKeys, function merge(prop) {
+    if (prop in config2) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
     }
   });
 
   var axiosKeys = valueFromConfig2Keys
     .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys);
+    .concat(defaultToConfig2Keys)
+    .concat(directMergeKeys);
 
   var otherKeys = Object
-    .keys(config2)
+    .keys(config1)
+    .concat(Object.keys(config2))
     .filter(function filterAxiosKeys(key) {
       return axiosKeys.indexOf(key) === -1;
     });
 
-  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(otherKeys, mergeDeepProperties);
 
   return config;
 };
@@ -937,8 +856,7 @@ module.exports = function mergeConfig(config1, config2) {
 /*!***********************************************!*\
   !*** ./node_modules/axios/lib/core/settle.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -954,7 +872,7 @@ var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  if (!validateStatus || validateStatus(response.status)) {
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -974,8 +892,7 @@ module.exports = function settle(resolve, reject, response) {
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/core/transformData.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1006,11 +923,11 @@ module.exports = function transformData(data, headers, fns) {
 /*!********************************************!*\
   !*** ./node_modules/axios/lib/defaults.js ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+/* provided dependency */ var process = __webpack_require__(/*! process/browser */ "./node_modules/process/browser.js");
+
 
 var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
 var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
@@ -1086,6 +1003,7 @@ var defaults = {
   xsrfHeaderName: 'X-XSRF-TOKEN',
 
   maxContentLength: -1,
+  maxBodyLength: -1,
 
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
@@ -1108,7 +1026,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -1116,8 +1033,7 @@ module.exports = defaults;
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/helpers/bind.js ***!
   \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -1139,8 +1055,7 @@ module.exports = function bind(fn, thisArg) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1149,7 +1064,6 @@ var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/util
 
 function encode(val) {
   return encodeURIComponent(val).
-    replace(/%40/gi, '@').
     replace(/%3A/gi, ':').
     replace(/%24/g, '$').
     replace(/%2C/gi, ',').
@@ -1222,8 +1136,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /*!*******************************************************!*\
   !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -1248,8 +1161,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/helpers/cookies.js ***!
   \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1313,8 +1225,7 @@ module.exports = (
 /*!*********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -1335,12 +1246,33 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
+/***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
+  \********************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Determines whether the payload is an error thrown by Axios
+ *
+ * @param {*} payload The value to test
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+ */
+module.exports = function isAxiosError(payload) {
+  return (typeof payload === 'object') && (payload.isAxiosError === true);
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/lib/helpers/isURLSameOrigin.js":
 /*!***********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
   \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1419,8 +1351,7 @@ module.exports = (
 /*!***************************************************************!*\
   !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
   \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1443,8 +1374,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
   \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1508,8 +1438,7 @@ module.exports = function parseHeaders(headers) {
 /*!**************************************************!*\
   !*** ./node_modules/axios/lib/helpers/spread.js ***!
   \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
 
@@ -1547,8 +1476,7 @@ module.exports = function spread(callback) {
 /*!*****************************************!*\
   !*** ./node_modules/axios/lib/utils.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
@@ -1656,6 +1584,21 @@ function isNumber(val) {
  */
 function isObject(val) {
   return val !== null && typeof val === 'object';
+}
+
+/**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (toString.call(val) !== '[object Object]') {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
 }
 
 /**
@@ -1814,34 +1757,12 @@ function forEach(obj, fn) {
 function merge(/* obj1, obj2, obj3, ... */) {
   var result = {};
   function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
       result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
- * Function equal to merge with the difference being that no reference
- * to original objects is kept.
- *
- * @see merge
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function deepMerge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = deepMerge(result[key], val);
-    } else if (typeof val === 'object') {
-      result[key] = deepMerge({}, val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
     } else {
       result[key] = val;
     }
@@ -1872,6 +1793,19 @@ function extend(a, b, thisArg) {
   return a;
 }
 
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xFEFF) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
 module.exports = {
   isArray: isArray,
   isArrayBuffer: isArrayBuffer,
@@ -1881,6 +1815,7 @@ module.exports = {
   isString: isString,
   isNumber: isNumber,
   isObject: isObject,
+  isPlainObject: isPlainObject,
   isUndefined: isUndefined,
   isDate: isDate,
   isFile: isFile,
@@ -1891,11 +1826,529 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
-  deepMerge: deepMerge,
   extend: extend,
-  trim: trim
+  trim: trim,
+  stripBOM: stripBOM
 };
 
+
+/***/ }),
+
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // присвоюємо токен для сторінки
+// забезпечує можливість ajax-запитів до laravel
+
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+}); // додаємо маски для вводу номерів телефону
+
+$(document).ready(function () {
+  Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone_sender');
+  Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone_recipient');
+  Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone');
+  Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone_user');
+  Inputmask({
+    "mask": "+380999999999"
+  }).mask('#phone_filter');
+  Inputmask({
+    "mask": "999999"
+  }).mask('#search_package');
+  Inputmask({
+    "mask": "999999"
+  }).mask('#search_package_user');
+}); // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
+
+$('#phone_sender').keydown(function (e) {
+  if (e.keyCode == 13) {
+    var sender_phone = $('#phone_sender').val();
+    ajaxGetInfoSender(sender_phone);
+  }
+}); // при натисканні 'enter' в полі '#phone_recipient' відправляємо запит для пошуку клієнта по номеру телефону
+
+$('#phone_recipient').keydown(function (e) {
+  if (e.keyCode == 13) {
+    var recipient_phone = $('#phone_recipient').val();
+    ajaxGetInfoRecipient(recipient_phone);
+  }
+}); // при зміні міста підтягуємо його відділення
+
+$('#city_recipient').change(function (e) {
+  var city = $('#city_recipient').val();
+  ajaxGetCityPoints(city);
+}); // підтягуємо міста з БД на сторінці "Відділення"
+
+$('#city_list').change(function (e) {
+  var city = $('#city_list').val();
+  ajaxGetCityPointsList(city);
+});
+$('#city_user').change(function (e) {
+  var city = $('#city_user').val();
+  ajaxGetCityPointsList(city);
+}); // при натисканні кнопки "Оформити посилку" відправляємо запит на створення нової посилки
+
+$('#add_new_package').click(function (e) {
+  $('#form_new_package').submit();
+});
+$('#search_package').keydown(function (e) {
+  if (e.keyCode == 13) {
+    var package_number = $('#search_package').val();
+    ajaxGetInfoPackage(package_number);
+  }
+});
+$('#search-addon').click(function (e) {
+  var package_number = $('#search_package').val();
+
+  if (package_number.length == 6) {
+    ajaxGetInfoPackage(package_number);
+  }
+});
+$(function () {
+  $("#city_recipient").trigger("change");
+  $("#city_list").trigger("change");
+}); // масив полів, заповненість яких потрібно перевіряти при розрахунку вартості доставки
+
+var validateCostFields = ['#pacckage_width', '#pacckage_length', '#pacckage_heigth', '#pacckage_weight', '#pacckage_cost']; // для кожного поля присвоюємо функцію валідації
+
+validateCostFields.forEach(function (field) {
+  validateCalculateCostFields(field);
+});
+$('#calculate_cost').click(function (e) {
+  ajaxCalculateCostPackage();
+});
+
+if ($("#home_menu")) {
+  //знаходимо посилки по замовчуванню
+  var _is_active = $("#customSwitches").prop("checked") ? 1 : 0;
+
+  var individual = "receiver";
+  $(document).ready(function () {
+    if ($("package_table")) {
+      ajaxGetUserPackages(individual);
+    }
+
+    ajaxPackageCount("sender", _is_active);
+    ajaxPackageCount("receiver", _is_active);
+  }); //  знаходимо посилки відповідно до статусу активності
+
+  $("#customSwitches").change(function (e) {
+    _is_active = $("#customSwitches").prop("checked") ? 1 : 0;
+    ajaxGetUserPackages(individual, _is_active);
+    ajaxPackageCount("sender", _is_active);
+    ajaxPackageCount("receiver", _is_active);
+  }); //вибір вихідних посилок
+
+  $("#sent").click(function () {
+    individual = "sender";
+    toggleActivePackages(individual);
+    $(".individual").text("ПІБ отримувача");
+    $(".individual-phone").text("Телефон отримувача");
+  }); //вибір вхідних посилок
+
+  $("#incoming").click(function () {
+    individual = "receiver";
+    toggleActivePackages(individual);
+    $(".individual").text("ПІБ відправника");
+    $(".individual-phone").text("Телефон відправника");
+  });
+  $("#user-settings-button").click(function () {
+    ajaxGetInfoUser();
+  });
+  $("#change_info").click(function () {
+    var form = $("#change_user_info_form");
+    ajaxChangeUserInfo(form);
+  });
+  $("#search_package_user").keydown(function (e) {
+    if (e.keyCode == 13) {
+      var package_number = $("#search_package_user").val();
+      ajaxGetInfoAboutPackage(package_number);
+      $("#package_on_info_button").trigger("click");
+    }
+  });
+}
+
+function ajaxGetInfoSender(sender_phone) {
+  $.ajax({
+    type: "POST",
+    url: 'sender_info',
+    data: {
+      phone_sender: sender_phone
+    },
+    success: function success(data) {
+      $('.alert-danger').remove();
+      $('.sender_info_box').css('display', 'flex');
+
+      if (data["surname"]) {
+        $('#surname_sender').val(data["surname"]);
+      }
+
+      if (data["name"]) {
+        $('#name_sender').val(data["name"]);
+      }
+
+      if (data["middle_name"]) {
+        $('#middle_name_sender').val(data["middle_name"]);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {
+      var resporse = data.responseJSON;
+      var errors = resporse['errors']['phone_sender'];
+      var $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
+      $errorsDiv.prependTo($("#create_package_box"));
+      errors.forEach(function (element) {
+        $('.alert-danger').append('<li>' + element + '</li>');
+      });
+    }
+  });
+}
+
+function ajaxGetInfoRecipient(recipient_phone) {
+  $.ajax({
+    type: "POST",
+    url: 'recipient_info',
+    data: {
+      phone_recipient: recipient_phone
+    },
+    success: function success(data) {
+      $('.alert-danger').remove();
+      $('.recipient_info_box').css('display', 'flex');
+
+      if (data["surname"]) {
+        $('#surname_recipient').val(data["surname"]);
+      }
+
+      if (data["name"]) {
+        $('#name_recipient').val(data["name"]);
+      }
+
+      if (data["middle_name"]) {
+        $('#middle_name_recipient').val(data["middle_name"]);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {
+      var resporse = data.responseJSON;
+      var errors = resporse['errors']['phone_recipient'];
+      var $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
+      $errorsDiv.prependTo($("#create_package_box"));
+      errors.forEach(function (element) {
+        $('.alert-danger').append('<li>' + element + '</li>');
+      });
+    }
+  });
+} // дістаємо відділення відповідно до вибраного міста для сторінки з новою посилкою
+
+
+function ajaxGetCityPoints(city) {
+  $.ajax({
+    type: "POST",
+    url: 'get_points',
+    data: {
+      city: city
+    },
+    success: function success(data) {
+      $('#point_recipient').empty();
+      data.forEach(function (point) {
+        $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
+      });
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} // дістаємо відділення відповідно до вибраного міста для пункту меню "Відділення"
+
+
+function ajaxGetCityPointsList(city) {
+  $.ajax({
+    type: "POST",
+    url: 'get_points',
+    data: {
+      city: city
+    },
+    success: function success(data) {
+      $('.points_list').empty();
+      data.forEach(function (point) {
+        $('.points_list').append('<option value="' + point['id'] + '">' + point['name'] + ' - ' + point['adress'] + '</option>');
+      });
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} // функція перевіряє чи заповнені всі поля для розрахунку вартості доставки
+// і вмикає або вимикає кнопку розрахунку доставки
+
+
+function validateCalculateCostFields(field) {
+  $(field).change(function (e) {
+    if ($('#pacckage_width').val() != "" && $('#pacckage_length').val() != "" && $('#pacckage_heigth').val() != "" && $('#pacckage_weight').val() != "" && $('#pacckage_cost').val() != "") {
+      $('#calculate_cost').prop('disabled', false);
+    } else {
+      $('#calculate_cost').prop('disabled', true);
+    }
+  });
+}
+
+function ajaxCalculateCostPackage() {
+  var width = +$('#pacckage_width').val();
+  var length = +$('#pacckage_length').val();
+  var heigth = +$('#pacckage_heigth').val();
+  var weight = +$('#pacckage_weight').val();
+  var cost = +$('#pacckage_cost').val();
+  $.ajax({
+    type: "POST",
+    url: 'calculate_package_cost',
+    data: {
+      width: width,
+      length: length,
+      heigth: heigth,
+      weight: weight,
+      cost: cost
+    },
+    success: function success(data) {
+      $('.pay_sum_block').css('display', 'block');
+      $('#pay_sum').val(data);
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+}
+
+function ajaxGetInfoPackage(package_number) {
+  $.ajax({
+    type: "POST",
+    url: 'get_package_info_number',
+    data: {
+      number: package_number
+    },
+    success: function success(data) {
+      $('#info_about_package').empty();
+      $('#info_about_package').append("<p>Статус посилки - " + data['status'] + "</p>");
+      $('#info_about_package').append("<p>Орієнтовна дата прибуття - " + data['date'] + "</p>");
+    },
+    error: function error(data, textStatus, errorThrown) {
+      $('#info_about_package').empty();
+      $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
+    }
+  });
+} // дістаємо всі посилки даного користувача по заданим критеріям
+
+
+function ajaxGetUserPackages(individual) {
+  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  $.ajax({
+    type: "POST",
+    url: "get_packages_for_user",
+    data: {
+      individual: individual,
+      is_active: is_active
+    },
+    success: function success(data) {
+      $('.package_table tbody').empty();
+
+      if ($('.package_table') && data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
+          var price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
+          var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
+          $('.package_table tbody').append(newRow);
+        }
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} //кількість посилок
+
+
+function ajaxPackageCount(individual) {
+  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  $.ajax({
+    type: "POST",
+    url: 'get_packages_count',
+    data: {
+      individual: individual,
+      is_active: is_active
+    },
+    success: function success(data) {
+      if (individual == 'sender') {
+        $('#sent_count').text(data);
+      } else if (individual == 'receiver') {
+        $('#incoming_count').text(data);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} // перемикаємо тип посилок
+
+
+function toggleActivePackages(individual) {
+  $('#incoming').toggleClass('no_active_text');
+  $('#sent').toggleClass('no_active_text');
+  ajaxGetUserPackages(individual, is_active);
+} // отримуємо інформацію про власника кабінету
+
+
+function ajaxGetInfoUser() {
+  $.ajax({
+    type: "POST",
+    url: 'user_info',
+    success: function success(data) {
+      if (data['user_info']['phone']) {
+        $('#phone_user').val(data['user_info']['phone']);
+      }
+
+      if (data['user_info']['surname']) {
+        $('#surname_user').val(data['user_info']['surname']);
+      }
+
+      if (data['user_info']['name']) {
+        $('#name_user').val(data['user_info']['name']);
+      }
+
+      if (data['user_info']['middle_name']) {
+        $('#middle_name_user').val(data['user_info']['middle_name']);
+      }
+
+      $('#city_user').empty();
+
+      if (!data['user_info']['point_default_id'] && !data['city_id']) {
+        $('#city_user').append('<option disabled selected>Виберiть місто</option>');
+        $('#point_user').append('<option disabled selected>Виберiть відділення</option>');
+      }
+
+      data['points'].forEach(function (city) {
+        $('#city_user').append('<option value="' + city['id'] + '">' + city['name'] + '</option>');
+      });
+
+      if (data['city_id']) {
+        $("#city_user option[value=".concat(data['city_id'], "]")).prop('selected', true);
+        $("#city_user").trigger("change");
+        setTimeout(function () {
+          $("#point_user option[value=".concat(data['user_info']['point_default_id'], "]")).prop('selected', true);
+        }, 250);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+} // зберігаємо зміни в інформації про користувача
+
+
+function ajaxChangeUserInfo(form) {
+  $.ajax({
+    type: "POST",
+    url: 'change_user',
+    data: form.serialize(),
+    success: function success(data) {
+      if (data['res']) {
+        $('#user_info_errors').remove();
+        $("#cancel_change_info").trigger("click");
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {
+      var resporse = data.responseJSON;
+      var errors = resporse['errors'];
+      var $errorsDiv = $('<div class="alert alert-danger" id="user_info_errors"><ul></ul></div>');
+      $errorsDiv.prependTo($("#user_info_modal_body"));
+      $.each(errors, function (index, value) {
+        $('.alert-danger').append('<li>' + value + '</li>');
+      });
+    }
+  });
+} // виводимо ынформацыю по номеру посилки
+
+
+function ajaxGetInfoAboutPackage(package_number) {
+  $.ajax({
+    type: "POST",
+    url: "get_package_info_for_user",
+    data: {
+      package_number: package_number
+    },
+    success: function success(data) {
+      $('#info_about_no_user_package').empty();
+      $('.one_package_table tbody').empty();
+
+      if (data['status'] == 'no_package') {
+        $('#info_about_no_user_package').show();
+        $('.one_package_table').hide();
+        $('#info_about_no_user_package').append('<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>');
+      }
+
+      if (data['status'] == 'short_info') {
+        $('#info_about_no_user_package').show();
+        $('.one_package_table').hide();
+        $('#info_about_no_user_package').append("<p>Статус посилки - " + data['short_info']['status'] + "</p>");
+        $('#info_about_no_user_package').append("<p>Орієнтовна дата прибуття - " + data['short_info']['date'] + "</p>");
+      }
+
+      if (data['status'] == 'long_info') {
+        $('#info_about_no_user_package').hide();
+        $('.one_package_table').show();
+        var price = data['package']['payment'] == 0 ? 0 : data['package']['price'];
+        var newRow = $("<tr></tr>").append("<td>".concat(data['package']['package_number'], "</td>")).append("<td>".concat(data['package']['sender_surname'], " ").concat(data['package']['sender_name'], " ").concat(data['package']['sender_middle_name'], "</td>")).append("<td>".concat(data['package']['sender_phone'], "</td>")).append("<td>".concat(data['package']['city_from'], ", ").concat(data['package']['adress_from'], "</td>")).append("<td>".concat(data['package']['receiver_surname'], " ").concat(data['package']['receiver_name'], " ").concat(data['package']['receiver_middle_name'], "</td>")).append("<td>".concat(data['package']['receiver_phone'], "</td>")).append("<td>".concat(data['package']['city_to'], ", ").concat(data['package']['adress_to'], "</td>")).append("<td>".concat(data['package']['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data['package']['category'], "</td>")).append("<td>".concat(data['package']['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data['package']['status'], "</td>"));
+        $('.one_package_table tbody').append(newRow);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/bootstrap.js":
+/*!***********************************!*\
+  !*** ./resources/js/bootstrap.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/**
+ * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+ * for JavaScript based Bootstrap features such as modals and tabs. This
+ * code may be modified to fit the specific needs of your application.
+ */
+
+try {
+  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js").default;
+  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+} catch (e) {}
+/**
+ * We'll load the axios HTTP library which allows us to easily issue requests
+ * to our Laravel back-end. This library automatically handles sending the
+ * CSRF token as a header based on the value of the "XSRF" token cookie.
+ */
+
+
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+/**
+ * Echo exposes an expressive API for subscribing to channels and listening
+ * for events that are broadcast by Laravel. Echo and event broadcasting
+ * allows your team to easily build robust real-time web applications.
+ */
+// import Echo from 'laravel-echo';
+// window.Pusher = require('pusher-js');
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     forceTLS: true
+// });
+
+window.$ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var Inputmask = __webpack_require__(/*! inputmask */ "./node_modules/inputmask/index.js");
 
 /***/ }),
 
@@ -1903,8 +2356,7 @@ module.exports = {
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
   \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 /*!
   * Bootstrap v4.6.0 (https://getbootstrap.com/)
@@ -1913,7 +2365,7 @@ module.exports = {
   */
 (function (global, factory) {
    true ? factory(exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")) :
-  undefined;
+  0;
 }(this, (function (exports, $, Popper) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -6345,8 +6797,7 @@ module.exports = {
 /*!**************************************************!*\
   !*** ./node_modules/inputmask/dist/inputmask.js ***!
   \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 /*!
  * dist/inputmask
@@ -6360,12 +6811,12 @@ module.exports = {
 }(window, function() {
     return modules = [ function(module) {
         module.exports = JSON.parse('{"BACKSPACE":8,"BACKSPACE_SAFARI":127,"DELETE":46,"DOWN":40,"END":35,"ENTER":13,"ESCAPE":27,"HOME":36,"INSERT":45,"LEFT":37,"PAGE_DOWN":34,"PAGE_UP":33,"RIGHT":39,"SPACE":32,"TAB":9,"UP":38,"X":88,"CONTROL":17,"KEY_229":229}');
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_884__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
-        }), exports.default = void 0, __webpack_require__(10);
-        var _mask = __webpack_require__(11), _inputmask = _interopRequireDefault(__webpack_require__(9)), _window = _interopRequireDefault(__webpack_require__(6)), _maskLexer = __webpack_require__(19), _validationTests = __webpack_require__(3), _positioning = __webpack_require__(2), _validation = __webpack_require__(4), _inputHandling = __webpack_require__(5), _eventruler = __webpack_require__(12), _definitions = _interopRequireDefault(__webpack_require__(20)), _defaults = _interopRequireDefault(__webpack_require__(21));
+        }), exports.default = void 0, __nested_webpack_require_884__(10);
+        var _mask = __nested_webpack_require_884__(11), _inputmask = _interopRequireDefault(__nested_webpack_require_884__(9)), _window = _interopRequireDefault(__nested_webpack_require_884__(6)), _maskLexer = __nested_webpack_require_884__(19), _validationTests = __nested_webpack_require_884__(3), _positioning = __nested_webpack_require_884__(2), _validation = __nested_webpack_require_884__(4), _inputHandling = __nested_webpack_require_884__(5), _eventruler = __nested_webpack_require_884__(12), _definitions = _interopRequireDefault(__nested_webpack_require_884__(20)), _defaults = _interopRequireDefault(__nested_webpack_require_884__(21));
         function _typeof(obj) {
             return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function _typeof(obj) {
                 return typeof obj;
@@ -6544,7 +6995,7 @@ module.exports = {
         }, Inputmask.dependencyLib = _inputmask.default, _window.default.Inputmask = Inputmask;
         var _default = Inputmask;
         exports.default = _default;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_14502__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
@@ -6553,7 +7004,7 @@ module.exports = {
         exports.getBufferTemplate = getBufferTemplate, exports.getLastValidPosition = getLastValidPosition, 
         exports.isMask = isMask, exports.resetMaskSet = resetMaskSet, exports.seekNext = seekNext, 
         exports.seekPrevious = seekPrevious, exports.translatePosition = translatePosition;
-        var _validationTests = __webpack_require__(3), _validation = __webpack_require__(4), _mask = __webpack_require__(11);
+        var _validationTests = __nested_webpack_require_14502__(3), _validation = __nested_webpack_require_14502__(4), _mask = __nested_webpack_require_14502__(11);
         function caret(input, begin, end, notranslate, isDelete) {
             var inputmask = this, opts = this.opts, range;
             if (void 0 === begin) return "selectionStart" in input && "selectionEnd" in input ? (begin = input.selectionStart, 
@@ -6963,14 +7414,14 @@ module.exports = {
         }), exports.determineTestTemplate = determineTestTemplate, exports.getDecisionTaker = getDecisionTaker, 
         exports.getMaskTemplate = getMaskTemplate, exports.getPlaceholder = getPlaceholder, 
         exports.getTest = getTest, exports.getTests = getTests, exports.getTestTemplate = getTestTemplate;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_50114__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.alternate = alternate, exports.checkAlternationMatch = checkAlternationMatch, 
         exports.isComplete = isComplete, exports.isValid = isValid, exports.refreshFromBuffer = refreshFromBuffer, 
         exports.revalidateMask = revalidateMask, exports.handleRemove = handleRemove;
-        var _validationTests = __webpack_require__(3), _keycode = _interopRequireDefault(__webpack_require__(0)), _positioning = __webpack_require__(2), _eventhandlers = __webpack_require__(7);
+        var _validationTests = __nested_webpack_require_50114__(3), _keycode = _interopRequireDefault(__nested_webpack_require_50114__(0)), _positioning = __nested_webpack_require_50114__(2), _eventhandlers = __nested_webpack_require_50114__(7);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7271,14 +7722,14 @@ module.exports = {
             } else validTest && _validationTests.getTest.call(this, validatedPos).match.cd === validTest.match.cd && (maskset.validPositions[validatedPos] = $.extend(!0, {}, validTest));
             return _positioning.resetMaskSet.call(this, !0), offset;
         }
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_74548__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.applyInputValue = applyInputValue, exports.clearOptionalTail = clearOptionalTail, 
         exports.checkVal = checkVal, exports.HandleNativePlaceholder = HandleNativePlaceholder, 
         exports.unmaskedvalue = unmaskedvalue, exports.writeBuffer = writeBuffer;
-        var _keycode = _interopRequireDefault(__webpack_require__(0)), _validationTests = __webpack_require__(3), _positioning = __webpack_require__(2), _validation = __webpack_require__(4), _environment = __webpack_require__(8), _eventhandlers = __webpack_require__(7);
+        var _keycode = _interopRequireDefault(__nested_webpack_require_74548__(0)), _validationTests = __nested_webpack_require_74548__(3), _positioning = __nested_webpack_require_74548__(2), _validation = __nested_webpack_require_74548__(4), _environment = __nested_webpack_require_74548__(8), _eventhandlers = __nested_webpack_require_74548__(7);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7399,12 +7850,12 @@ module.exports = {
         }), exports.default = void 0;
         var _default = "undefined" != typeof window ? window : new (eval("require('jsdom').JSDOM"))("").window;
         exports.default = _default;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_86072__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.EventHandlers = void 0;
-        var _positioning = __webpack_require__(2), _keycode = _interopRequireDefault(__webpack_require__(0)), _environment = __webpack_require__(8), _validation = __webpack_require__(4), _inputHandling = __webpack_require__(5), _validationTests = __webpack_require__(3);
+        var _positioning = __nested_webpack_require_86072__(2), _keycode = _interopRequireDefault(__nested_webpack_require_86072__(0)), _environment = __nested_webpack_require_86072__(8), _validation = __nested_webpack_require_86072__(4), _inputHandling = __nested_webpack_require_86072__(5), _validationTests = __nested_webpack_require_86072__(3);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7640,12 +8091,12 @@ module.exports = {
         var ua = window.navigator && window.navigator.userAgent || "", ie = 0 < ua.indexOf("MSIE ") || 0 < ua.indexOf("Trident/"), mobile = "ontouchstart" in window, iemobile = /iemobile/i.test(ua), iphone = /iphone/i.test(ua) && !iemobile;
         exports.iphone = iphone, exports.iemobile = iemobile, exports.mobile = mobile, exports.ie = ie, 
         exports.ua = ua;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_107581__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.default = void 0;
-        var _extend = _interopRequireDefault(__webpack_require__(13)), _window = _interopRequireDefault(__webpack_require__(6)), _data = _interopRequireDefault(__webpack_require__(17)), _events = __webpack_require__(18);
+        var _extend = _interopRequireDefault(__nested_webpack_require_107581__(13)), _window = _interopRequireDefault(__nested_webpack_require_107581__(6)), _data = _interopRequireDefault(__nested_webpack_require_107581__(17)), _events = __nested_webpack_require_107581__(18);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7677,12 +8128,12 @@ module.exports = {
         } : function(object) {
             return object.constructor.prototype;
         });
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_109721__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
-        }), exports.mask = mask, __webpack_require__(10);
-        var _keycode = _interopRequireDefault(__webpack_require__(0)), _positioning = __webpack_require__(2), _inputHandling = __webpack_require__(5), _eventruler = __webpack_require__(12), _environment = __webpack_require__(8), _validation = __webpack_require__(4), _eventhandlers = __webpack_require__(7);
+        }), exports.mask = mask, __nested_webpack_require_109721__(10);
+        var _keycode = _interopRequireDefault(__nested_webpack_require_109721__(0)), _positioning = __nested_webpack_require_109721__(2), _inputHandling = __nested_webpack_require_109721__(5), _eventruler = __nested_webpack_require_109721__(12), _environment = __nested_webpack_require_109721__(8), _validation = __nested_webpack_require_109721__(4), _eventhandlers = __nested_webpack_require_109721__(7);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7808,12 +8259,12 @@ module.exports = {
                 }
             }
         }
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_120906__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.EventRuler = void 0;
-        var _inputmask = _interopRequireDefault(__webpack_require__(1)), _keycode = _interopRequireDefault(__webpack_require__(0)), _positioning = __webpack_require__(2), _inputHandling = __webpack_require__(5);
+        var _inputmask = _interopRequireDefault(__nested_webpack_require_120906__(1)), _keycode = _interopRequireDefault(__nested_webpack_require_120906__(0)), _positioning = __nested_webpack_require_120906__(2), _inputHandling = __nested_webpack_require_120906__(5);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7913,13 +8364,13 @@ module.exports = {
         function _default(str) {
             return str.replace(escapeRegexRegex, "\\$1");
         }
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_127658__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
-        }), exports.default = void 0, __webpack_require__(16), __webpack_require__(22), 
-        __webpack_require__(23), __webpack_require__(24);
-        var _inputmask2 = _interopRequireDefault(__webpack_require__(1));
+        }), exports.default = void 0, __nested_webpack_require_127658__(16), __nested_webpack_require_127658__(22), 
+        __nested_webpack_require_127658__(23), __nested_webpack_require_127658__(24);
+        var _inputmask2 = _interopRequireDefault(__nested_webpack_require_127658__(1));
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -7927,9 +8378,9 @@ module.exports = {
         }
         var _default = _inputmask2.default;
         exports.default = _default;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_128266__) {
         "use strict";
-        var _inputmask = _interopRequireDefault(__webpack_require__(1));
+        var _inputmask = _interopRequireDefault(__nested_webpack_require_128266__(1));
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -8036,12 +8487,12 @@ module.exports = {
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.default = _default;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_132536__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.on = on, exports.off = off, exports.trigger = trigger, exports.Event = void 0;
-        var _extend = _interopRequireDefault(__webpack_require__(13)), _window = _interopRequireDefault(__webpack_require__(6)), _inputmask = _interopRequireDefault(__webpack_require__(9)), Event;
+        var _extend = _interopRequireDefault(__nested_webpack_require_132536__(13)), _window = _interopRequireDefault(__nested_webpack_require_132536__(6)), _inputmask = _interopRequireDefault(__nested_webpack_require_132536__(9)), Event;
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -8129,12 +8580,12 @@ module.exports = {
             return evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail), 
             evt;
         }, Event.prototype = _window.default.Event.prototype);
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_138762__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: !0
         }), exports.generateMaskSet = generateMaskSet, exports.analyseMask = analyseMask;
-        var _inputmask = _interopRequireDefault(__webpack_require__(9));
+        var _inputmask = _interopRequireDefault(__nested_webpack_require_138762__(9));
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -8474,9 +8925,9 @@ module.exports = {
             usePrototypeDefinitions: !0
         };
         exports.default = _default;
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_158600__) {
         "use strict";
-        var _inputmask = _interopRequireDefault(__webpack_require__(1)), _keycode = _interopRequireDefault(__webpack_require__(0)), _escapeRegex = _interopRequireDefault(__webpack_require__(14));
+        var _inputmask = _interopRequireDefault(__nested_webpack_require_158600__(1)), _keycode = _interopRequireDefault(__nested_webpack_require_158600__(0)), _escapeRegex = _interopRequireDefault(__nested_webpack_require_158600__(14));
         function _typeof(obj) {
             return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function _typeof(obj) {
                 return typeof obj;
@@ -8797,9 +9248,9 @@ module.exports = {
                 inputmode: "numeric"
             }
         });
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_178252__) {
         "use strict";
-        var _inputmask = _interopRequireDefault(__webpack_require__(1)), _keycode = _interopRequireDefault(__webpack_require__(0)), _escapeRegex = _interopRequireDefault(__webpack_require__(14));
+        var _inputmask = _interopRequireDefault(__nested_webpack_require_178252__(1)), _keycode = _interopRequireDefault(__nested_webpack_require_178252__(0)), _escapeRegex = _interopRequireDefault(__nested_webpack_require_178252__(14));
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 default: obj
@@ -9179,9 +9630,9 @@ module.exports = {
                 digitsOptional: !1
             }
         });
-    }, function(module, exports, __webpack_require__) {
+    }, function(module, exports, __nested_webpack_require_204653__) {
         "use strict";
-        var _window = _interopRequireDefault(__webpack_require__(6)), _inputmask = _interopRequireDefault(__webpack_require__(1));
+        var _window = _interopRequireDefault(__nested_webpack_require_204653__(6)), _inputmask = _interopRequireDefault(__nested_webpack_require_204653__(1));
         function _typeof(obj) {
             return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function _typeof(obj) {
                 return typeof obj;
@@ -9299,47 +9750,47 @@ module.exports = {
             }(_wrapNativeSuper(HTMLElement));
             _window.default.customElements.define("input-mask", InputmaskElement);
         }
-    } ], installedModules = {}, __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
-    __webpack_require__.d = function(exports, name, getter) {
-        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+    } ], installedModules = {}, __nested_webpack_require_212863__.m = modules, __nested_webpack_require_212863__.c = installedModules, 
+    __nested_webpack_require_212863__.d = function(exports, name, getter) {
+        __nested_webpack_require_212863__.o(exports, name) || Object.defineProperty(exports, name, {
             enumerable: !0,
             get: getter
         });
-    }, __webpack_require__.r = function(exports) {
+    }, __nested_webpack_require_212863__.r = function(exports) {
         "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(exports, Symbol.toStringTag, {
             value: "Module"
         }), Object.defineProperty(exports, "__esModule", {
             value: !0
         });
-    }, __webpack_require__.t = function(value, mode) {
-        if (1 & mode && (value = __webpack_require__(value)), 8 & mode) return value;
+    }, __nested_webpack_require_212863__.t = function(value, mode) {
+        if (1 & mode && (value = __nested_webpack_require_212863__(value)), 8 & mode) return value;
         if (4 & mode && "object" == typeof value && value && value.__esModule) return value;
         var ns = Object.create(null);
-        if (__webpack_require__.r(ns), Object.defineProperty(ns, "default", {
+        if (__nested_webpack_require_212863__.r(ns), Object.defineProperty(ns, "default", {
             enumerable: !0,
             value: value
-        }), 2 & mode && "string" != typeof value) for (var key in value) __webpack_require__.d(ns, key, function(key) {
+        }), 2 & mode && "string" != typeof value) for (var key in value) __nested_webpack_require_212863__.d(ns, key, function(key) {
             return value[key];
         }.bind(null, key));
         return ns;
-    }, __webpack_require__.n = function(module) {
+    }, __nested_webpack_require_212863__.n = function(module) {
         var getter = module && module.__esModule ? function getDefault() {
             return module.default;
         } : function getModuleExports() {
             return module;
         };
-        return __webpack_require__.d(getter, "a", getter), getter;
-    }, __webpack_require__.o = function(object, property) {
+        return __nested_webpack_require_212863__.d(getter, "a", getter), getter;
+    }, __nested_webpack_require_212863__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 15);
-    function __webpack_require__(moduleId) {
+    }, __nested_webpack_require_212863__.p = "", __nested_webpack_require_212863__(__nested_webpack_require_212863__.s = 15);
+    function __nested_webpack_require_212863__(moduleId) {
         if (installedModules[moduleId]) return installedModules[moduleId].exports;
         var module = installedModules[moduleId] = {
             i: moduleId,
             l: !1,
             exports: {}
         };
-        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
+        return modules[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_212863__), 
         module.l = !0, module.exports;
     }
     var modules, installedModules;
@@ -9351,8 +9802,7 @@ module.exports = {
 /*!*****************************************!*\
   !*** ./node_modules/inputmask/index.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(/*! ./dist/inputmask */ "./node_modules/inputmask/dist/inputmask.js");
 
@@ -9363,8 +9813,7 @@ module.exports = __webpack_require__(/*! ./dist/inputmask */ "./node_modules/inp
 /*!********************************************!*\
   !*** ./node_modules/jquery/dist/jquery.js ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * jQuery JavaScript Library v3.6.0
@@ -20210,7 +20659,7 @@ if ( true ) {
 	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 		return jQuery;
 	}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 }
 
 
@@ -20256,10 +20705,10 @@ return jQuery;
 /*!***************************************!*\
   !*** ./node_modules/lodash/lodash.js ***!
   \***************************************/
-/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
  * Lodash <https://lodash.com/>
  * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
@@ -20688,7 +21137,7 @@ return jQuery;
       freeParseInt = parseInt;
 
   /** Detect free variable `global` from Node.js. */
-  var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+  var freeGlobal = typeof __webpack_require__.g == 'object' && __webpack_require__.g && __webpack_require__.g.Object === Object && __webpack_require__.g;
 
   /** Detect free variable `self`. */
   var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -20700,7 +21149,7 @@ return jQuery;
   var freeExports =  true && exports && !exports.nodeType && exports;
 
   /** Detect free variable `module`. */
-  var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+  var freeModule = freeExports && "object" == 'object' && module && !module.nodeType && module;
 
   /** Detect the popular CommonJS extension `module.exports`. */
   var moduleExports = freeModule && freeModule.exports === freeExports;
@@ -37455,13 +37904,25 @@ return jQuery;
     !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
       return _;
     }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   }
   // Check for `exports` after `define` in case a build optimizer adds it.
   else {}
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
 
 /***/ }),
 
@@ -37469,12 +37930,14 @@ return jQuery;
 /*!***************************************************!*\
   !*** ./node_modules/popper.js/dist/esm/popper.js ***!
   \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/**!
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.16.1
  * @license
@@ -40084,14 +40547,13 @@ var Popper = function () {
  */
 
 
-Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
+Popper.Utils = (typeof window !== 'undefined' ? window : __webpack_require__.g).PopperUtils;
 Popper.placements = placements;
 Popper.Defaults = Defaults;
 
-/* harmony default export */ __webpack_exports__["default"] = (Popper);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -40099,8 +40561,7 @@ Popper.Defaults = Defaults;
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -40288,607 +40749,182 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // присвоюємо токен для сторінки
-// забезпечує можливість ajax-запитів до laravel
-
-
-$.ajaxSetup({
-  headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
-}); // додаємо маски для вводу номерів телефону
-
-$(document).ready(function () {
-  Inputmask({
-    "mask": "+380999999999"
-  }).mask('#phone_sender');
-  Inputmask({
-    "mask": "+380999999999"
-  }).mask('#phone_recipient');
-  Inputmask({
-    "mask": "+380999999999"
-  }).mask('#phone');
-  Inputmask({
-    "mask": "+380999999999"
-  }).mask('#phone_user');
-  Inputmask({
-    "mask": "999999"
-  }).mask('#search_package');
-  Inputmask({
-    "mask": "999999"
-  }).mask('#search_package_user');
-}); // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
-
-$('#phone_sender').keydown(function (e) {
-  if (e.keyCode == 13) {
-    var sender_phone = $('#phone_sender').val();
-    ajaxGetInfoSender(sender_phone);
-  }
-}); // при натисканні 'enter' в полі '#phone_recipient' відправляємо запит для пошуку клієнта по номеру телефону
-
-$('#phone_recipient').keydown(function (e) {
-  if (e.keyCode == 13) {
-    var recipient_phone = $('#phone_recipient').val();
-    ajaxGetInfoRecipient(recipient_phone);
-  }
-}); // при зміні міста підтягуємо його відділення
-
-$('#city_recipient').change(function (e) {
-  var city = $('#city_recipient').val();
-  ajaxGetCityPoints(city);
-}); // підтягуємо міста з БД на сторінці "Відділення"
-
-$('#city_list').change(function (e) {
-  var city = $('#city_list').val();
-  ajaxGetCityPointsList(city);
-});
-$('#city_user').change(function (e) {
-  var city = $('#city_user').val();
-  ajaxGetCityPointsList(city);
-}); // при натисканні кнопки "Оформити посилку" відправляємо запит на створення нової посилки
-
-$('#add_new_package').click(function (e) {
-  $('#form_new_package').submit();
-});
-$('#search_package').keydown(function (e) {
-  if (e.keyCode == 13) {
-    var package_number = $('#search_package').val();
-    ajaxGetInfoPackage(package_number);
-  }
-});
-$('#search-addon').click(function (e) {
-  var package_number = $('#search_package').val();
-
-  if (package_number.length == 6) {
-    ajaxGetInfoPackage(package_number);
-  }
-});
-$(function () {
-  $("#city_recipient").trigger("change");
-  $("#city_list").trigger("change");
-}); // масив полів, заповненість яких потрібно перевіряти при розрахунку вартості доставки
-
-var validateCostFields = ['#pacckage_width', '#pacckage_length', '#pacckage_heigth', '#pacckage_weight', '#pacckage_cost']; // для кожного поля присвоюємо функцію валідації
-
-validateCostFields.forEach(function (field) {
-  validateCalculateCostFields(field);
-});
-$('#calculate_cost').click(function (e) {
-  ajaxCalculateCostPackage();
-}); //знаходимо посилки по замовчуванню
-
-var is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-var individual = 'receiver';
-$(document).ready(function () {
-  if ($('package_table')) {
-    ajaxGetUserPackages(individual);
-  }
-
-  ajaxPackageCount('sender', is_active);
-  ajaxPackageCount('receiver', is_active);
-}); //  знаходимо посилки відповідно до статусу активності
-
-$('#customSwitches').change(function (e) {
-  is_active = $('#customSwitches').prop('checked') ? 1 : 0;
-  ajaxGetUserPackages(individual, is_active);
-  ajaxPackageCount('sender', is_active);
-  ajaxPackageCount('receiver', is_active);
-}); //вибір вихідних посилок
-
-$('#sent').click(function () {
-  individual = 'sender';
-  toggleActivePackages(individual);
-  $('.individual').text('ПІБ отримувача');
-  $('.individual-phone').text('Телефон отримувача');
-}); //вибір вхідних посилок
-
-$('#incoming').click(function () {
-  individual = 'receiver';
-  toggleActivePackages(individual);
-  $('.individual').text('ПІБ відправника');
-  $('.individual-phone').text('Телефон відправника');
-});
-$('#user-settings-button').click(function () {
-  ajaxGetInfoUser();
-});
-$('#change_info').click(function () {
-  var form = $('#change_user_info_form');
-  ajaxChangeUserInfo(form);
-});
-$('#search_package_user').keydown(function (e) {
-  if (e.keyCode == 13) {
-    var package_number = $('#search_package_user').val();
-    ajaxGetInfoAboutPackage(package_number);
-    $('#package_on_info_button').trigger("click");
-  }
-});
-
-function ajaxGetInfoSender(sender_phone) {
-  $.ajax({
-    type: "POST",
-    url: 'sender_info',
-    data: {
-      phone_sender: sender_phone
-    },
-    success: function success(data) {
-      $('.alert-danger').remove();
-      $('.sender_info_box').css('display', 'flex');
-
-      if (data["surname"]) {
-        $('#surname_sender').val(data["surname"]);
-      }
-
-      if (data["name"]) {
-        $('#name_sender').val(data["name"]);
-      }
-
-      if (data["middle_name"]) {
-        $('#middle_name_sender').val(data["middle_name"]);
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {
-      var resporse = data.responseJSON;
-      var errors = resporse['errors']['phone_sender'];
-      var $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
-      $errorsDiv.prependTo($("#create_package_box"));
-      errors.forEach(function (element) {
-        $('.alert-danger').append('<li>' + element + '</li>');
-      });
-    }
-  });
-}
-
-function ajaxGetInfoRecipient(recipient_phone) {
-  $.ajax({
-    type: "POST",
-    url: 'recipient_info',
-    data: {
-      phone_recipient: recipient_phone
-    },
-    success: function success(data) {
-      $('.alert-danger').remove();
-      $('.recipient_info_box').css('display', 'flex');
-
-      if (data["surname"]) {
-        $('#surname_recipient').val(data["surname"]);
-      }
-
-      if (data["name"]) {
-        $('#name_recipient').val(data["name"]);
-      }
-
-      if (data["middle_name"]) {
-        $('#middle_name_recipient').val(data["middle_name"]);
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {
-      var resporse = data.responseJSON;
-      var errors = resporse['errors']['phone_recipient'];
-      var $errorsDiv = $('<div class="alert alert-danger"><ul></ul></div>');
-      $errorsDiv.prependTo($("#create_package_box"));
-      errors.forEach(function (element) {
-        $('.alert-danger').append('<li>' + element + '</li>');
-      });
-    }
-  });
-} // дістаємо відділення відповідно до вибраного міста для сторінки з новою посилкою
-
-
-function ajaxGetCityPoints(city) {
-  $.ajax({
-    type: "POST",
-    url: 'get_points',
-    data: {
-      city: city
-    },
-    success: function success(data) {
-      $('#point_recipient').empty();
-      data.forEach(function (point) {
-        $('#point_recipient').append("<option value=" + point['id'] + ">" + point['name'] + ' - ' + point['adress'] + "</option>");
-      });
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-} // дістаємо відділення відповідно до вибраного міста для пункту меню "Відділення"
-
-
-function ajaxGetCityPointsList(city) {
-  $.ajax({
-    type: "POST",
-    url: 'get_points',
-    data: {
-      city: city
-    },
-    success: function success(data) {
-      $('.points_list').empty();
-      data.forEach(function (point) {
-        $('.points_list').append('<option value="' + point['id'] + '">' + point['name'] + ' - ' + point['adress'] + '</option>');
-      });
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-} // функція перевіряє чи заповнені всі поля для розрахунку вартості доставки
-// і вмикає або вимикає кнопку розрахунку доставки
-
-
-function validateCalculateCostFields(field) {
-  $(field).change(function (e) {
-    if ($('#pacckage_width').val() != "" && $('#pacckage_length').val() != "" && $('#pacckage_heigth').val() != "" && $('#pacckage_weight').val() != "" && $('#pacckage_cost').val() != "") {
-      $('#calculate_cost').prop('disabled', false);
-    } else {
-      $('#calculate_cost').prop('disabled', true);
-    }
-  });
-}
-
-function ajaxCalculateCostPackage() {
-  var width = +$('#pacckage_width').val();
-  var length = +$('#pacckage_length').val();
-  var heigth = +$('#pacckage_heigth').val();
-  var weight = +$('#pacckage_weight').val();
-  var cost = +$('#pacckage_cost').val();
-  $.ajax({
-    type: "POST",
-    url: 'calculate_package_cost',
-    data: {
-      width: width,
-      length: length,
-      heigth: heigth,
-      weight: weight,
-      cost: cost
-    },
-    success: function success(data) {
-      $('.pay_sum_block').css('display', 'block');
-      $('#pay_sum').val(data);
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-}
-
-function ajaxGetInfoPackage(package_number) {
-  $.ajax({
-    type: "POST",
-    url: 'get_package_info_number',
-    data: {
-      number: package_number
-    },
-    success: function success(data) {
-      $('#info_about_package').empty();
-      $('#info_about_package').append("<p>Статус посилки - " + data['status'] + "</p>");
-      $('#info_about_package').append("<p>Орієнтовна дата прибуття - " + data['date'] + "</p>");
-    },
-    error: function error(data, textStatus, errorThrown) {
-      $('#info_about_package').empty();
-      $('#info_about_package').append("<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>");
-    }
-  });
-} // дістаємо всі посилки даного користувача по заданим критеріям
-
-
-function ajaxGetUserPackages(individual) {
-  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  $.ajax({
-    type: "POST",
-    url: "get_packages_for_user",
-    data: {
-      individual: individual,
-      is_active: is_active
-    },
-    success: function success(data) {
-      $('.package_table tbody').empty();
-
-      if ($('.package_table') && data.length > 0) {
-        for (var i = 0; i < data.length; i++) {
-          var price = data[i]['payment'] == 0 ? 0 : data[i]['price'];
-          var newRow = $("<tr></tr>").append("<td>".concat(data[i]['package_number'], "</td>")).append("<td>".concat(data[i]['sender_surname'], " ").concat(data[i]['sender_name'], " ").concat(data[i]['sender_middle_name'], "</td>")).append("<td>".concat(data[i]['sender_phone'], "</td>")).append("<td>".concat(data[i]['city_to'], ", ").concat(data[i]['adress_to'], "</td>")).append("<td>".concat(data[i]['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data[i]['category'], "</td>")).append("<td>".concat(data[i]['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data[i]['status'], "</td>"));
-          $('.package_table tbody').append(newRow);
-        }
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-} //кількість посилок
-
-
-function ajaxPackageCount(individual) {
-  var is_active = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  $.ajax({
-    type: "POST",
-    url: 'get_packages_count',
-    data: {
-      individual: individual,
-      is_active: is_active
-    },
-    success: function success(data) {
-      if (individual == 'sender') {
-        $('#sent_count').text(data);
-      } else if (individual == 'receiver') {
-        $('#incoming_count').text(data);
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-} // перемикаємо тип посилок
-
-
-function toggleActivePackages(individual) {
-  $('#incoming').toggleClass('no_active_text');
-  $('#sent').toggleClass('no_active_text');
-  ajaxGetUserPackages(individual, is_active);
-} // отримуємо інформацію про власника кабінету
-
-
-function ajaxGetInfoUser() {
-  $.ajax({
-    type: "POST",
-    url: 'user_info',
-    success: function success(data) {
-      if (data['user_info']['phone']) {
-        $('#phone_user').val(data['user_info']['phone']);
-      }
-
-      if (data['user_info']['surname']) {
-        $('#surname_user').val(data['user_info']['surname']);
-      }
-
-      if (data['user_info']['name']) {
-        $('#name_user').val(data['user_info']['name']);
-      }
-
-      if (data['user_info']['middle_name']) {
-        $('#middle_name_user').val(data['user_info']['middle_name']);
-      }
-
-      $('#city_user').empty();
-
-      if (!data['user_info']['point_default_id'] && !data['city_id']) {
-        $('#city_user').append('<option disabled selected>Виберiть місто</option>');
-        $('#point_user').append('<option disabled selected>Виберiть відділення</option>');
-      }
-
-      data['points'].forEach(function (city) {
-        $('#city_user').append('<option value="' + city['id'] + '">' + city['name'] + '</option>');
-      });
-
-      if (data['city_id']) {
-        $("#city_user option[value=".concat(data['city_id'], "]")).prop('selected', true);
-        $("#city_user").trigger("change");
-        setTimeout(function () {
-          $("#point_user option[value=".concat(data['user_info']['point_default_id'], "]")).prop('selected', true);
-        }, 250);
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-} // зберігаємо зміни в інформації про користувача
-
-
-function ajaxChangeUserInfo(form) {
-  $.ajax({
-    type: "POST",
-    url: 'change_user',
-    data: form.serialize(),
-    success: function success(data) {
-      if (data['res']) {
-        $('#user_info_errors').remove();
-        $("#cancel_change_info").trigger("click");
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {
-      var resporse = data.responseJSON;
-      var errors = resporse['errors'];
-      var $errorsDiv = $('<div class="alert alert-danger" id="user_info_errors"><ul></ul></div>');
-      $errorsDiv.prependTo($("#user_info_modal_body"));
-      $.each(errors, function (index, value) {
-        $('.alert-danger').append('<li>' + value + '</li>');
-      });
-    }
-  });
-} // виводимо ынформацыю по номеру посилки
-
-
-function ajaxGetInfoAboutPackage(package_number) {
-  $.ajax({
-    type: "POST",
-    url: "get_package_info_for_user",
-    data: {
-      package_number: package_number
-    },
-    success: function success(data) {
-      $('#info_about_no_user_package').empty();
-      $('.one_package_table tbody').empty();
-
-      if (data['status'] == 'no_package') {
-        $('#info_about_no_user_package').show();
-        $('.one_package_table').hide();
-        $('#info_about_no_user_package').append('<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>');
-      }
-
-      if (data['status'] == 'short_info') {
-        $('#info_about_no_user_package').show();
-        $('.one_package_table').hide();
-        $('#info_about_no_user_package').append("<p>Статус посилки - " + data['short_info']['status'] + "</p>");
-        $('#info_about_no_user_package').append("<p>Орієнтовна дата прибуття - " + data['short_info']['date'] + "</p>");
-      }
-
-      if (data['status'] == 'long_info') {
-        $('#info_about_no_user_package').hide();
-        $('.one_package_table').show();
-        var price = data['package']['payment'] == 0 ? 0 : data['package']['price'];
-        var newRow = $("<tr></tr>").append("<td>".concat(data['package']['package_number'], "</td>")).append("<td>".concat(data['package']['sender_surname'], " ").concat(data['package']['sender_name'], " ").concat(data['package']['sender_middle_name'], "</td>")).append("<td>".concat(data['package']['sender_phone'], "</td>")).append("<td>".concat(data['package']['city_from'], ", ").concat(data['package']['adress_from'], "</td>")).append("<td>".concat(data['package']['receiver_surname'], " ").concat(data['package']['receiver_name'], " ").concat(data['package']['receiver_middle_name'], "</td>")).append("<td>".concat(data['package']['receiver_phone'], "</td>")).append("<td>".concat(data['package']['city_to'], ", ").concat(data['package']['adress_to'], "</td>")).append("<td>".concat(data['package']['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data['package']['category'], "</td>")).append("<td>".concat(data['package']['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data['package']['status'], "</td>"));
-        $('.one_package_table tbody').append(newRow);
-      }
-    },
-    error: function error(data, textStatus, errorThrown) {}
-  });
-}
-
-/***/ }),
-
-/***/ "./resources/js/bootstrap.js":
-/*!***********************************!*\
-  !*** ./resources/js/bootstrap.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-
-try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
-  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-  __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
-} catch (e) {}
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-// import Echo from 'laravel-echo';
-// window.Pusher = require('pusher-js');
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
-
-window.$ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-var Inputmask = __webpack_require__(/*! inputmask */ "./node_modules/inputmask/index.js");
-
-/***/ }),
-
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! D:\work\xampp\htdocs\site\hashtag-delivery\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\work\xampp\htdocs\site\hashtag-delivery\resources\sass\app.scss */"./resources/sass/app.scss");
-
-
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/js/app": 0,
+/******/ 			"css/app": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			for(moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) var result = runtime(__webpack_require__);
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
