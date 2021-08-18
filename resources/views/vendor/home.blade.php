@@ -97,7 +97,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-body" id="user_info_modal_body">
-                    <form id="change_user_info_form">
+                    <form id="filter_form">
                         <div>
                             <p>Одержувач: </p>
                         </div>
@@ -128,13 +128,13 @@
                             <div class="form-group col-md-6">
                                 <label for="city_filter">Місто:</label>
                                 <select class="form-control" id="city_filter" name="city_filter">
-                                    <option selected>Виберіть місто</option>
+                                    <option selected value="">Виберіть місто</option>
                                 </select>
                             </div>
                             <div class="form-group  col-md-6">
                                 <label for="point_filter">Відділення:</label>
                                 <select class="form-control points_list" id="point_filter" name="point_filter">
-                                    <option selected>Виберіть відділення</option>
+                                    <option selected value="">Виберіть відділення</option>
                                 </select>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel_change_info">Відмінити</button>
-                    <button type="button" class="btn btn-primary" id="change_info">Застосувати фільтри</button>
+                    <button type="button" class="btn btn-primary" id="use_filter">Застосувати фільтри</button>
                 </div>
             </div>
         </div>

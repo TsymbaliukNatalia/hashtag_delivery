@@ -211,6 +211,34 @@ class PackageController extends Controller
             $packages->whereNotIn(DB::raw('p.status_id'), [4, 10]);
         }
 
+        $filters = $req->filter_params;
+        if(!empty($filters)) {
+            if(isset($filters['phone_filter'])){
+                $packages->where(DB::raw($individualOpposite.'.phone'), '=', $filters['phone_filter']);
+            }
+            if(isset($filters['surname_filter'])){
+                $packages->where(DB::raw($individualOpposite.'.surname'), '=', $filters['surname_filter']);
+            }
+            if(isset($filters['name_filter'])){
+                $packages->where(DB::raw($individualOpposite.'.name'), '=', $filters['name_filter']);
+            }
+            if(isset($filters['middle_name_filter'])){
+                $packages->where(DB::raw($individualOpposite.'.middle_name'), '=', $filters['middle_name_filter']);
+            }
+            if(isset($filters['city_filter'])){
+                $packages->where(DB::raw('ct.id'), '=', $filters['city_filter']);
+            }
+            if(isset($filters['point_filter'])){
+                $packages->where(DB::raw('pt.id'), '=', $filters['point_filter']);
+            }
+            if(isset($filters['date_start'])){
+                $packages->where(DB::raw('p.created_at'), '>', $filters['date_start']);
+            }
+            if(isset($filters['date_end'])){
+                $packages->where(DB::raw('p.created_at'), '<', $filters['date_end']);
+            }
+        }
+
         return response()->json($packages->get());
     }
 

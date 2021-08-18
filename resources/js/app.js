@@ -50,6 +50,11 @@ $('#city_list').change(function(e) {
     ajaxGetCityPointsList(city);
 });
 
+$('#city_filter').change(function(e) {
+    let city = $('#city_filter').val();
+    ajaxGetCityPointsList(city, true);
+});
+
 $('#city_user').change(function(e) {
     let city = $('#city_user').val();
     ajaxGetCityPointsList(city);
@@ -128,6 +133,14 @@ if ($("#home_menu")) {
         toggleActivePackages(individual);
         $(".individual").text("ПІБ відправника");
         $(".individual-phone").text("Телефон відправника");
+    });
+
+    $("#use_filter").click(function() {
+        let filter_params = {};
+        $('#filter_form').find('input, select, date').each(function() {
+            filter_params[this.name] = $(this).val();
+        });
+        ajaxGetUserPackages(individual, is_active = 0, filter_params)
     });
 
     $("#user-settings-button").click(function() {
@@ -232,13 +245,16 @@ function ajaxGetCityPoints(city) {
 }
 
 // дістаємо відділення відповідно до вибраного міста для пункту меню "Відділення"
-function ajaxGetCityPointsList(city) {
+function ajaxGetCityPointsList(city, filter = false) {
     $.ajax({
         type: "POST",
         url: 'get_points',
         data: { city: city },
         success: function(data) {
             $('.points_list').empty();
+            if (filter) {
+                $('.points_list').append('<option selected>Виберіть відділення</option>');
+            }
             data.forEach(function(point) {
                 $('.points_list').append('<option value="' + point['id'] + '">' + point['name'] + ' - ' + point['adress'] + '</option>');
             });
@@ -306,13 +322,14 @@ function ajaxGetInfoPackage(package_number) {
 }
 
 // дістаємо всі посилки даного користувача по заданим критеріям
-function ajaxGetUserPackages(individual, is_active = 0) {
+function ajaxGetUserPackages(individual, is_active = 0, filter_params = []) {
     $.ajax({
         type: "POST",
         url: "get_packages_for_user",
         data: {
             individual: individual,
-            is_active: is_active
+            is_active: is_active,
+            filter_params: filter_params
         },
         success: function(data) {
             $('.package_table tbody').empty();
