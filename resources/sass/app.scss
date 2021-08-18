@@ -1,13 +1,9 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
-
 body {
     background-color: #EDEBEC;
 }
@@ -33,93 +29,128 @@ body {
     background-color: #3490DC;
     padding: 30px;
 }
-.search_package_block{
+
+.search_package_block {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.search_package_block div{
+
+.search_package_block div {
     margin-bottom: 20px;
 }
-.search_package_block h2{
+
+.search_package_block h2 {
     color: white;
     font-weight: 500;
 }
-.search_package_block p{
+
+.search_package_block p {
     color: #002B80;
 }
-.search_package_input{
+
+.search_package_input {
     margin-right: 5px;
 }
-.baner_text{
+
+.baner_text {
     font-size: 32px;
     color: white;
     text-align: center;
 }
-.info_block{
+
+.info_block {
     position: relative;
 }
-.info_block:after{
+
+.info_block:after {
     content: "";
     position: absolute;
     top: 115px;
     left: 60px;
-    width:100%;
+    width: 100%;
     height: 100%;
     background-image: url(/img/post.png);
     background-repeat: no-repeat;
 }
-.form_package_box{
+
+.form_package_box {
     margin: 0 auto;
 }
-.sender_info_box{
+
+.sender_info_box {
     display: none;
 }
-.recipient_info_box{
+
+.recipient_info_box {
     display: none;
 }
-.pay_sum_block{
+
+.pay_sum_block {
     display: none;
 }
-#calculate_cost{
+
+#calculate_cost {
     margin-bottom: 15px;
 }
-#info_about_package p{
+
+#info_about_package p {
     margin-bottom: 2px;
     color: white;
 }
-.big_text{
+
+.big_text {
     font-size: 26px;
     cursor: pointer;
 }
-.switch_active{
+
+.switch_active {
     font-size: 14px;
 }
-.home_content_box{
+
+.home_content_box {
     margin-bottom: 30px;
 }
-.no_active_text{
+
+.no_active_text {
     color: grey;
 }
-.package_table{
+
+.package_table,
+.one_package_table {
     background-color: whitesmoke;
     margin-top: 15px;
     border-radius: 20px;
 }
-.package_table tr{
+
+.package_table tr,
+.one_package_table tr {
     text-align: center;
     vertical-align: top;
     font-size: 14px;
-    color:#323233;
+    color: #323233;
 }
-.package_table td{
+
+.one_package_table tr {
+    font-size: 12px;
+}
+
+.package_table td,
+.one_package_table td {
     text-align: center;
     vertical-align: top;
     font-size: 12px;
 }
-.register{
+
+.register {
     margin-top: 50px;
 }
-.no-active{
+
+.no-active {
     display: none;
+}
+
+#info_about_no_user_package {
+    font-size: 18px;
+    padding: 20px;
 }

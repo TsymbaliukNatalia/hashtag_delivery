@@ -173,7 +173,8 @@ class PackageController extends Controller
         $individual = $req->individual;
         $individualOpposite = $opposite[$individual];
         
-        $userId = Auth::guard('vendor')->user()->id;
+        $user = Auth::guard('vendor')->user();
+        $userId = Client::where('phone', $user->phone)->first()->id;
         $packages = DB::table('packages as p' )
         ->join( 'clients as  ' . $individualOpposite, DB::raw('p. '.$individualOpposite.'_id'), '=', DB::raw( $individualOpposite.'.id'))
         ->join( 'points as pt', DB::raw('p.point_to'), '=', DB::raw('pt.id'))
@@ -207,7 +208,8 @@ class PackageController extends Controller
     public function getPackagesCount(Request $req){
 
         $individual = $req->individual;
-        $userId = Auth::guard('vendor')->user()->id;
+        $user = Auth::guard('vendor')->user();
+        $userId = Client::where('phone', $user->phone)->first()->id;
         $packages = DB::table('packages')
         ->where($individual.'_id', '=', $userId);
 
@@ -216,6 +218,59 @@ class PackageController extends Controller
         };
 
         return response()->json($packages->count());
+    }
+
+    public function getPackageInfoForUser(Request $req){
+
+        $user = Auth::guard('vendor')->user();
+        $client_id = Client::where('phone', $user->phone)->first()->id;
+        $package_number = $req->package_number;
+        $package = Package::find($package_number);
+        if(empty($package)){
+            $response['status'] = 'no_package';
+        } else if($package->sender_id !== $client_id && $package->receiver_id !== $client_id){
+            $response['status'] = 'short_info';
+            $date = $package->created_at;
+            $response['short_info'] = [
+                "status" => Status::find($package->status_id)->name,
+                "date" => date("d-m-Y", strtotime($date.'+ 1 days'))
+            ];
+        } else {
+            $package = DB::table('packages as p' )
+            ->join( 'clients as  sender', DB::raw('p. sender_id'), '=', DB::raw('sender.id'))
+            ->join( 'clients as  receiver', DB::raw('p. receiver_id'), '=', DB::raw('receiver.id'))
+            ->join( 'points as pt', DB::raw('p.point_to'), '=', DB::raw('pt.id'))
+            ->join( 'cities as ct', DB::raw('pt.city_id'), '=', DB::raw('ct.id'))
+            ->join( 'points as pf', DB::raw('p.point_from'), '=', DB::raw('pf.id'))
+            ->join( 'cities as cf', DB::raw('pf.city_id'), '=', DB::raw('cf.id'))
+            ->join( 'categories as cat', DB::raw('p.category_id'), '=', DB::raw('cat.id'))
+            ->join( 'statuses as st', DB::raw('p.status_id'), '=', DB::raw('st.id'))
+            ->select( DB::raw( 'p.id as package_number,
+            sender.name as sender_name,
+            sender.surname as sender_surname,
+            sender.middle_name sender_middle_name,
+            sender.phone as sender_phone,
+            receiver.name as receiver_name,
+            receiver.surname as receiver_surname,
+            receiver.middle_name receiver_middle_name,
+            receiver.phone as receiver_phone,
+            pt.adress as adress_to,
+            ct.name as city_to,
+            pf.adress as adress_from,
+            cf.name as city_from,
+            p.weight as weight,
+            p.created_at as created_at,
+            p.price as price,
+            p.payment as payment,
+            cat.name as category,
+            st.name as status'))
+            ->where(DB::raw('p.id'), '=', $package_number)
+            ->first();
+            $response['status'] = 'long_info';
+            $response['package'] = $package;
+        }
+    
+        return response()->json($response);
     }
     
 }

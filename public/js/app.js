@@ -40387,6 +40387,9 @@ $(document).ready(function () {
   Inputmask({
     "mask": "999999"
   }).mask('#search_package');
+  Inputmask({
+    "mask": "999999"
+  }).mask('#search_package_user');
 }); // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
 
 $('#phone_sender').keydown(function (e) {
@@ -40484,6 +40487,13 @@ $('#user-settings-button').click(function () {
 $('#change_info').click(function () {
   var form = $('#change_user_info_form');
   ajaxChangeUserInfo(form);
+});
+$('#search_package_user').keydown(function (e) {
+  if (e.keyCode == 13) {
+    var package_number = $('#search_package_user').val();
+    ajaxGetInfoAboutPackage(package_number);
+    $('#package_on_info_button').trigger("click");
+  }
 });
 
 function ajaxGetInfoSender(sender_phone) {
@@ -40766,6 +40776,43 @@ function ajaxChangeUserInfo(form) {
         $('.alert-danger').append('<li>' + value + '</li>');
       });
     }
+  });
+} // виводимо ынформацыю по номеру посилки
+
+
+function ajaxGetInfoAboutPackage(package_number) {
+  $.ajax({
+    type: "POST",
+    url: "get_package_info_for_user",
+    data: {
+      package_number: package_number
+    },
+    success: function success(data) {
+      $('#info_about_no_user_package').empty();
+      $('.one_package_table tbody').empty();
+
+      if (data['status'] == 'no_package') {
+        $('#info_about_no_user_package').show();
+        $('.one_package_table').hide();
+        $('#info_about_no_user_package').append('<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>');
+      }
+
+      if (data['status'] == 'short_info') {
+        $('#info_about_no_user_package').show();
+        $('.one_package_table').hide();
+        $('#info_about_no_user_package').append("<p>Статус посилки - " + data['short_info']['status'] + "</p>");
+        $('#info_about_no_user_package').append("<p>Орієнтовна дата прибуття - " + data['short_info']['date'] + "</p>");
+      }
+
+      if (data['status'] == 'long_info') {
+        $('#info_about_no_user_package').hide();
+        $('.one_package_table').show();
+        var price = data['package']['payment'] == 0 ? 0 : data['package']['price'];
+        var newRow = $("<tr></tr>").append("<td>".concat(data['package']['package_number'], "</td>")).append("<td>".concat(data['package']['sender_surname'], " ").concat(data['package']['sender_name'], " ").concat(data['package']['sender_middle_name'], "</td>")).append("<td>".concat(data['package']['sender_phone'], "</td>")).append("<td>".concat(data['package']['city_from'], ", ").concat(data['package']['adress_from'], "</td>")).append("<td>".concat(data['package']['receiver_surname'], " ").concat(data['package']['receiver_name'], " ").concat(data['package']['receiver_middle_name'], "</td>")).append("<td>".concat(data['package']['receiver_phone'], "</td>")).append("<td>".concat(data['package']['city_to'], ", ").concat(data['package']['adress_to'], "</td>")).append("<td>".concat(data['package']['weight'], " \u043A\u0433 </td>")).append("<td>".concat(data['package']['category'], "</td>")).append("<td>".concat(data['package']['created_at'], "</td>")).append("<td class=\"price\">".concat(price, " \u0433\u0440\u043D</td>")).append("<td>".concat(data['package']['status'], "</td>"));
+        $('.one_package_table tbody').append(newRow);
+      }
+    },
+    error: function error(data, textStatus, errorThrown) {}
   });
 }
 

@@ -93,6 +93,46 @@
         </div>
     </div>
 
+    <button type="button" class="btn btn-primary no-active" id="package_on_info_button" data-toggle="modal" data-target=".bd-package-info-modal-xl"></button>
+
+    <div class="modal fade bd-package-info-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h4" id="myExtraLargeModalLabel">Інформація про посилку</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div id="info_about_no_user_package" class="">
+                </div>
+                <div class="card-body one_package_table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Номер ЕН</th>
+                                <th scope="col">ПІБ відправника</th>
+                                <th scope="col">Телефон відправника</th>
+                                <th scope="col">Адреса відправки</th>
+                                <th scope="col">ПІБ отримувача</th>
+                                <th scope="col">Телефон отримувача</th>
+                                <th scope="col">Адреса доставки</th>
+                                <th scope="col">Вага</th>
+                                <th scope="col">Категорія посилки</th>
+                                <th scope="col">Дата створення</th>
+                                <th scope="col">До сплати</th>
+                                <th scope="col">Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -119,7 +159,7 @@
                     <button class="btn btn-primary">Фільтри</button>
                 </div>
                 <div class="input-group rounded float-right col-md-3">
-                    <input type="search" class="form-control rounded search_package_home_input" id="search_package" placeholder="Введіть номер посилки" aria-label="Search" aria-describedby="search-addon" />
+                    <input type="search" class="form-control rounded search_package_home_input" id="search_package_user" placeholder="Введіть номер посилки" aria-label="Search" aria-describedby="search-addon" />
                     <span class="input-group-text border-0" id="search-addon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />

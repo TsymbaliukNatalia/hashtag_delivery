@@ -16,6 +16,7 @@ $(document).ready(function() {
     Inputmask({ "mask": "+380999999999" }).mask('#phone');
     Inputmask({ "mask": "+380999999999" }).mask('#phone_user');
     Inputmask({ "mask": "999999" }).mask('#search_package');
+    Inputmask({ "mask": "999999" }).mask('#search_package_user');
 });
 
 // при натисканні 'enter' в полі '#phone_sender' відправляємо запит для пошуку клієнта по номеру телефону
@@ -130,6 +131,14 @@ $('#user-settings-button').click(function() {
 $('#change_info').click(function() {
     let form = $('#change_user_info_form');
     ajaxChangeUserInfo(form);
+});
+
+$('#search_package_user').keydown(function(e) {
+    if (e.keyCode == 13) {
+        let package_number = $('#search_package_user').val();
+        ajaxGetInfoAboutPackage(package_number);
+        $('#package_on_info_button').trigger("click");
+    }
 });
 
 
@@ -415,6 +424,55 @@ function ajaxChangeUserInfo(form) {
             $.each(errors, function(index, value) {
                 $('.alert-danger').append('<li>' + value + '</li>');
             });
+        },
+    });
+}
+
+// виводимо ынформацыю по номеру посилки
+function ajaxGetInfoAboutPackage(package_number) {
+    $.ajax({
+        type: "POST",
+        url: "get_package_info_for_user",
+        data: {
+            package_number: package_number
+        },
+        success: function(data) {
+            $('#info_about_no_user_package').empty();
+            $('.one_package_table tbody').empty();
+            if (data['status'] == 'no_package') {
+                $('#info_about_no_user_package').show();
+                $('.one_package_table').hide();
+                $('#info_about_no_user_package').append('<p>Посилку не знайдено! Перевірте будь ласка правильність введеного номеру посилки!</p>');
+            }
+            if (data['status'] == 'short_info') {
+                $('#info_about_no_user_package').show();
+                $('.one_package_table').hide();
+                $('#info_about_no_user_package').append("<p>Статус посилки - " + data['short_info']['status'] + "</p>");
+                $('#info_about_no_user_package').append("<p>Орієнтовна дата прибуття - " + data['short_info']['date'] + "</p>");
+            }
+            if (data['status'] == 'long_info') {
+                $('#info_about_no_user_package').hide();
+                $('.one_package_table').show();
+                let price = data['package']['payment'] == 0 ? 0 : data['package']['price'];
+                let newRow = $("<tr></tr>")
+                    .append(`<td>${data['package']['package_number']}</td>`)
+                    .append(`<td>${data['package']['sender_surname']} ${data['package']['sender_name']} ${data['package']['sender_middle_name']}</td>`)
+                    .append(`<td>${data['package']['sender_phone']}</td>`)
+                    .append(`<td>${data['package']['city_from']}, ${data['package']['adress_from']}</td>`)
+                    .append(`<td>${data['package']['receiver_surname']} ${data['package']['receiver_name']} ${data['package']['receiver_middle_name']}</td>`)
+                    .append(`<td>${data['package']['receiver_phone']}</td>`)
+                    .append(`<td>${data['package']['city_to']}, ${data['package']['adress_to']}</td>`)
+                    .append(`<td>${data['package']['weight']} кг </td>`)
+                    .append(`<td>${data['package']['category']}</td>`)
+                    .append(`<td>${data['package']['created_at']}</td>`)
+                    .append(`<td class="price">${price} грн</td>`)
+                    .append(`<td>${data['package']['status']}</td>`)
+
+                $('.one_package_table tbody').append(newRow);
+            }
+        },
+        error: function(data, textStatus, errorThrown) {
+
         },
     });
 }

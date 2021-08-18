@@ -11054,20 +11054,27 @@ body {
   color: grey;
 }
 
-.package_table {
+.package_table,
+.one_package_table {
   background-color: whitesmoke;
   margin-top: 15px;
   border-radius: 20px;
 }
 
-.package_table tr {
+.package_table tr,
+.one_package_table tr {
   text-align: center;
   vertical-align: top;
   font-size: 14px;
   color: #323233;
 }
 
-.package_table td {
+.one_package_table tr {
+  font-size: 12px;
+}
+
+.package_table td,
+.one_package_table td {
   text-align: center;
   vertical-align: top;
   font-size: 12px;
@@ -11079,5 +11086,10 @@ body {
 
 .no-active {
   display: none;
+}
+
+#info_about_no_user_package {
+  font-size: 18px;
+  padding: 20px;
 }
 
